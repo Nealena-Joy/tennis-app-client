@@ -1,4 +1,6 @@
-
+/* .appMain {
+  background-color: ;
+} */
 /* COACH NAV LINKS */
 .site-link{
   margin-left: 15px;
@@ -12,4 +14,8 @@
   height: 700px;
   color: rgb(174, 171, 171);
   margin-top: 65px;
+}
+
+* {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }

@@ -20,7 +20,7 @@ const App: React.FunctionComponent = () => {
           if (userRole === 'Coach') {
             return(<CoachRouter token={token} userRole={userRole}/>)
           } else {
-            return(<PlayerRouter/>)
+            return(<PlayerRouter />)
           }
       }
     }
@@ -28,9 +28,9 @@ const App: React.FunctionComponent = () => {
 
 
     return (      
-        <div>
+        <div className="appMain">
             {protectedViews()}
-            <div style={{textAlign:"center"}}>Footer Here</div>
+            <div style={{textAlign:"center",backgroundColor:"#",height:"500px"}}>Footer Here</div>
         </div>
     )
 }

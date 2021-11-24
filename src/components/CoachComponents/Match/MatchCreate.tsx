@@ -6,6 +6,7 @@ type Player = {
     token: string,
     players: [],
     playerID: string,
+    id: string,
     playersList: [],
     name: string,
     value: string,
@@ -13,12 +14,14 @@ type Player = {
     matchFormat: string,
     matchScore: string,
     matchTitle: string,
+    matchWinner: string,
 }
 type MatchDetails = {
     playerID: string,
     matchFormat: string,
     matchScore: string,
     matchTitle: string,
+    matchWinner: string,
 }
 type PlayerDetails = {
     username: string,
@@ -36,23 +39,23 @@ export default class MatchesCreate extends React.Component<{},Player> {
             playersList: [],
             players: [],
             playerID: '',
+            id: '',
             value: '',
             name: '',
             matchFormat: '',
             matchScore: '',
             matchTitle: '',
-            match: []
+            matchWinner: '',
+            match: [],
             
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleOptions = this.handleOptions.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
     }
 
     fetchPlayers() {
         let token = localStorage.getItem('token')
 
-        fetch(`https://tennis-app-njr.herokuapp.com/auth/players`,{
+        fetch(`https://tennis-app-njr.herokuapp.com/auth/all-players`,{
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -61,44 +64,37 @@ export default class MatchesCreate extends React.Component<{},Player> {
         })
         .then((response) => response.json())
         .then((response) => {
-            this.setState({players: response.Players});
-            console.log("Players:",response.Players);
+            this.setState({
+                players: response.PlayerDetails});
+            console.log("Players:",response.PlayerDetails);
         })
         .catch((error) => console.log("Player Error:", error))
     }
 
-componentDidMount(){
-        this.fetchPlayers()
-        
-        
+    componentDidMount(){
+        this.fetchPlayers();
     }
 
-    // CREAT MATCH
-    handleChange(event: React.ChangeEvent<HTMLInputElement>){
-        this.setState({
-            value: event.target.value
-        });
-    }
+    // componentWillUnmount(){
+    //     this.formSubmit();
+    // }
 
-    handleOptions(event: React.ChangeEvent<HTMLSelectElement>) {
-        this.setState({
-            playerID: event.target.value,
-            matchFormat: event.target.value,
-            matchTitle: event.target.value,
-            matchScore: event.target.value
-        })
-    }
-
-    formSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        console.log(this.state)
+    //! CREAT MATCH
+    formSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        console.log("Submit", this.state)
         let token = localStorage.getItem('token')
 
         fetch(`https://tennis-app-njr.herokuapp.com/matches/creatematch`,{
             method: 'POST',
             body: JSON.stringify({match: 
-                this.state
-
+                {
+                    matchTitle: this.state.matchTitle,
+                    matchFormat: this.state.matchFormat,
+                    matchScore: this.state.matchScore,
+                    matchWinner: this.state.matchWinner,
+                    playerID: this.state.playerID,
+                }
             }),
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -106,11 +102,10 @@ componentDidMount(){
             })
         })
         .then((response) => response.json())
-        // .then((response) => {
-        //     this.setState({players: response.Players});
-        //     console.log("Match Created:",response.Players);
-        // })
-        .catch((error) => console.log("Player Error:", error))
+        .then((response) => {
+            console.log("Match Created:",response);
+        })
+        .catch((error) => console.log("Match Error:", error))
     }
 
 
@@ -118,31 +113,45 @@ componentDidMount(){
     render() {
     return(
         <div>
-            <Form onClick={this.formSubmit}>
+            <Form onSubmit={this.formSubmit}>
             <Row className="g-2" style={{width:"80%",margin:"40px auto",padding:"15px",backgroundColor:"lightskyblue"}}>
                 <h4>Matches</h4>
+ 
                 <Col md>
                     <FloatingLabel controlId="floatingSelectGrid" label="Select a player">
                         <Form.Select aria-label="Floating label select example" 
-                        required onChange={this.handleOptions} name="playerIDname" value={this.state.playerID}>
+                            required  
+                            name="playerID" 
+                            onChange={(event: React.ChangeEvent<HTMLSelectElement>)=>this.setState({playerID: event.target.value})}>
                             <option>Open this select menu</option>
-                            {this.state.players.map((player: PlayerDetails) => (
-                                <option key={player.playerID} value={player.playerID}>
-                                    ({player.username})
+
+                            {this.state.players.map((player: PlayerDetails, index) => (
+                                <option key={1+index} value={player.id} >
+                                   {player.username}
                                 </option>
                             ))}
+
                         </Form.Select>
                     </FloatingLabel>
                     <br/>
                     <FloatingLabel controlId="floatingInputGrid" label="Match Title">
                         <Form.Control type="text" placeholder="Ex: Player 1 vs Player 2" 
-                            required onChange={this.handleChange} name="matchTitle"/>
+                            value={this.state.matchTitle} name="matchTitle" required
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({matchTitle: event.target.value})} />
+                    </FloatingLabel>
+                    <br/>
+                    <FloatingLabel controlId="floatingInputGrid" label="Winner">
+                            <Form.Control type="text" placeholder="8-3" required name="matchWinner"
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({matchWinner: event.target.value})} />
                     </FloatingLabel>
                 </Col>
-                <Col md>
+ 
+                <Col>
                     <FloatingLabel controlId="floatingInputGrid" label="Match Format">
                         <Form.Select aria-label="Floating label select example" 
-                            required onChange={this.handleOptions} name="matchFormat" value={FormData.name || ''}>
+                            required name="matchFormat" value={this.state.matchFormat}
+                            onChange={(event: React.ChangeEvent<HTMLSelectElement>)=>this.setState({matchFormat: event.target.value})} >
+
                             <option>Open this select menu</option>
                             <option value="Short Set (1st to 4 games)" >Short Set (1st to 4 games)</option>
                             <option value="Pro-Set (8 game)" disabled>Pro-Set (8 game)</option>
@@ -152,10 +161,11 @@ componentDidMount(){
                     </FloatingLabel>
                     <br/>
                     <FloatingLabel controlId="floatingInputGrid" label="Final Score">
-                        <Form.Control type="text" placeholder="8-3" required 
-                        onChange={this.handleChange} name="matchScore"/>
+                        <Form.Control type="text" placeholder="8-3" required name="matchScore"
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({matchScore: event.target.value})} />
                     </FloatingLabel>
                 </Col>
+
                 <hr style={{color:"transparent"}}/>
                 <Button style={{width:"150px",margin:"10px"}} type="submit">Add Match</Button>
                 <hr/>

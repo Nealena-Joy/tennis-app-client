@@ -1,14 +1,12 @@
 import React from 'react';
-import {Card, Row, Col, Button, Table, Modal} from 'react-bootstrap';
+import {Card, Row, Col, Button, Table} from 'react-bootstrap';
 
 type Match = {
     token: string,
-    All_Matches: [],
     matches: [],
     match: [],
     matchList: [],
-    PlayerDetails: [],
-    show: boolean
+    PlayerDetails: []
 }
 type MatchDetails = {
     id: string,
@@ -41,26 +39,23 @@ type match = {
     playerID: string
 }
 
-export default class MatchList extends React.Component<{},Match>{
+export default class MatchListTrial extends React.Component<{},Match>{
     constructor(props: any){
         super(props)
         this.state = {
             token: '',
-            show: false,
             matchList: [],
             matches: [],
             match: [],
-            PlayerDetails: [],
-            All_Matches: [],
+            PlayerDetails: []
         }
-        this.toggleModal = this.toggleModal.bind(this);
     }
 
     //!  GET ALL MATCHES
     fetchMatches() {
         let token = localStorage.getItem('token')
 
-        fetch(`https://tennis-app-njr.herokuapp.com/matches/all-matches`, {
+        fetch(`https://tennis-app-njr.herokuapp.com/auth/all-players`, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -70,9 +65,9 @@ export default class MatchList extends React.Component<{},Match>{
         .then((response) => response.json())
         .then((response) => {
             this.setState({
-                All_Matches: response.All_Matches
+                PlayerDetails: response.PlayerDetails
             })
-            console.log("Matches:", response.All_Matches)
+            console.log("Matches:", response.PlayerDetails)
         })
         .catch((error) => console.log("Matches Error:", error))
     }
@@ -98,24 +93,18 @@ export default class MatchList extends React.Component<{},Match>{
                 })
             })
             .catch(err => {console.log("Delete:",err)});
-        }
-    }
+        }}
 
-    toggleModal(){
-        this.setState({show: true});
-    }
 
     render() {
 
         return(
         <div style={{textAlign:"center",margin:"0 90px"}}>
-            <h4>
-                List of Matches
-            </h4>
+            <h4>List of Matches</h4>
             <br/>
-            <Table responsive >
+            <Table responsive>
                 <thead>
-                    <tr >
+                    <tr>
                         <th>#</th>
                         <th>Player</th>
                         <th>Match</th>
@@ -126,27 +115,24 @@ export default class MatchList extends React.Component<{},Match>{
                 </thead>
                 <tbody>
                   
-                { this.state.All_Matches.map((match: MatchDetails, index) => (
+                { this.state.PlayerDetails.map((player: PlayerDetails, index) => (
                     <tr style={{verticalAlign:"middle"}} key={1+index}>
                         <td>{1+index}</td>
-                        <td>{match.playerID}</td>
-                        <td>{match.matchTitle}</td>
-                        <td>{match.matchScore}</td>
-                        <td>{match.matchWinner}</td>
-                        <td>{match.matchWinner}</td>
+                        <td>{player.username}</td>
+                        {/* <td>{player.matchTitle}</td> */}
+                        <td>{player.matches.matchScore}</td>
+                        <td>{player.matches.matchWinner}</td>
+                        <td>{player.matches.matchWinner}</td>
                         <td>
-                            <Button onClick={this.toggleModal}>Delete</Button>
+                            <Button /*onClick={()=> this.handleDelete()}*/>Delete</Button>
                             &nbsp;&nbsp;
                             <Button>Edit</Button>
                         </td>
-
-
                     </tr>
                 ))}
                     
                 </tbody>
             </Table>
-            
         </div>
     )}
 }

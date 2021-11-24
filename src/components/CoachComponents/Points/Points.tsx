@@ -1,21 +1,68 @@
 import React from 'react';
 import {Form, Row, Col, Button } from 'react-bootstrap';
 import PointsList from './PointsList';
+import PointDetails from './PointDetails';
 
-export default class Points extends React.Component {
+type States = {
+    All_Matches: [],
+    matches: [],
+    match: [],
+    matchId: string,
+    matchScore: string,
+    gameScore1: string,
+    gameScore2: string,
+    Points: [],
+    pointID: string,
+    setScore: string,
+    gameScore: string,
+    serveResult: string,
+    pointResult: string,
+    coachComment: string,
+    coachID: string,
+}
+
+type MatchDetails = {
+    id: string,
+    matchFormat: string,
+    matchScore: string,
+    matchTitle: string,
+    matchWinner: string,
+    playerID: string,
+}
+
+export default class Points extends React.Component<{}, States> {
     constructor(props: any){
         super(props)
         this.state = {
-            token: '',
-           
+            All_Matches: [],
+            matches: [],
+            match: [],
+            matchId: '',
+            matchScore: '',
+            
+            Points: [],
+            gameScore1: '',
+            gameScore2: '',
+            pointID: '',
+            setScore: '',
+            gameScore: '',
+            serveResult: '',
+            pointResult: '',
+            coachComment: '',
+            coachID: '',
+            
+
         }
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
-    
-    fetchPoints() {
+
+
+    //!  GET LIST OF MATCHES
+    fetchMatches() {
         let token = localStorage.getItem('token')
 
-        fetch(`https://tennis-app-njr.herokuapp.com/points/point`, {
-            method: 'POST',
+        fetch(`https://tennis-app-njr.herokuapp.com/matches/all-matches`, {
+            method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Authorization': `${token}`
@@ -24,92 +71,176 @@ export default class Points extends React.Component {
         .then((response) => response.json())
         .then((response) => {
             this.setState({
-                Points: response.All_Matches
+                matches: response.All_Matches
             })
-            console.log("Points:", response.All_Matches)
+            console.log("Matches:", response.All_Matches)
         })
         .catch((error) => console.log("Matches Error:", error))
     }
 
     componentDidMount(){
-        this.fetchPoints()
-       
+        this.fetchMatches();
     }
+
+    //!  CREATE A POINT
+    handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        console.log("Submit:", this.state)
+
+        let token = localStorage.getItem('token');
+        //let gameScore = `${this.state.gameScore1}-${this.state.gameScore2}`;
+
+        fetch(`https://tennis-app-njr.herokuapp.com/points/point`,{
+            method: 'POST',
+            body: JSON.stringify({point: 
+                {
+                    setScore: this.state.setScore,
+                    gameScore: `${this.state.gameScore1}-${this.state.gameScore2}`,
+                    serveResult: this.state.serveResult,
+                    pointResult: this.state.pointResult,
+                    coachComment: this.state.coachComment,
+                    matchId: this.state.matchId
+                }
+            }),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': `${token}`
+            })
+        })
+        .then((response) => response.json()) 
+        .then((response) => {
+            console.log("Point Created:", response)
+        })
+        .catch(error => {console.log("Sign Up Error:", error)})
+    };
+
+    // componentDidMount() {
+    //     this.handleSubmit();
+    // }
 
     render() {
     return(
         <div>
             <h4>Match Analysis</h4>
-            <Form style={{width:"80%",margin:"40px auto",backgroundColor:"lightblue",padding:"10px"}}>
+            <Form onSubmit={this.handleSubmit}
+                style={{width:"80%",margin:"40px auto",backgroundColor:"lightblue",padding:"10px"}}>
                 <h4>Add a point to a match</h4>
 
                 <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
                     <Form.Label column sm={2}>Match</Form.Label>
                     <Col sm={10}>
-                    <Form.Select aria-label="Floating label select example">
-                        <option>Select match</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </Form.Select>
+                        <Form.Select aria-label="Floating label select example" 
+                            required 
+                            name="matchId"
+                            onChange={(event: React.ChangeEvent<HTMLSelectElement>)=>this.setState({matchId: event.target.value})} >
+                            <option>Select match</option>
+
+                            {this.state.matches.map((match: MatchDetails, index) => (
+                                <option key={1+index} value={match.id} >
+                                    {match.matchTitle}
+                                </option>
+                            ))}
+                            
+                        </Form.Select>
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Set Score</Form.Label>
                     <Col sm={10}>
-                    <Form.Control type="text" placeholder="" />
+                        <Form.Control type="text" placeholder="" name="matchScore" required
+                            value={this.state.setScore} 
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({setScore: event.target.value})}/>
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label as="legend" column sm={2}>Game Score Player 1</Form.Label>
                     <Col sm={10} style={{display:"inline"}}>
-                        <Form.Check inline type="radio" label="0" name="formHorizontalRadios" id="formHorizontalRadios1" />
-                        <Form.Check inline type="radio" label="15" name="formHorizontalRadios" id="formHorizontalRadios1" />
-                        <Form.Check inline type="radio" label="30" name="formHorizontalRadios" id="formHorizontalRadios1" />
-                        <Form.Check inline type="radio" label="40" name="formHorizontalRadios" id="formHorizontalRadios1" />
+                        <Form.Check inline type="radio" required
+                            label="0" value="0" name="gameScore1" id="gameScore1"
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({gameScore1: event.target.value})} />
+                        <Form.Check inline type="radio" required
+                            label="15" value="15" name="gameScore1" id="gameScore1"
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({gameScore1: event.target.value})} />
+                        <Form.Check inline type="radio" required
+                            label="30" value="30" name="gameScore1" id="gameScore1"
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({gameScore1: event.target.value})} />
+                        <Form.Check inline type="radio" required
+                            label="40" value="40" name="gameScore1" id="gameScore1"
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({gameScore1: event.target.value})} />
+                        <Form.Check inline type="radio" required
+                            label="AD" value="AD" name="gameScore1" id="gameScore1"
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({gameScore1: event.target.value})} />
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label as="legend" column sm={2}>Game Score Player 2</Form.Label>
                     <Col sm={10}>
-                        <Form.Check inline type="radio" label="0" name="player2" id="player2" />
-                        <Form.Check inline type="radio" label="15" name="player2" id="player2" />
-                        <Form.Check inline type="radio" label="30" name="player2" id="player2" />
-                        <Form.Check inline type="radio" label="40" name="player2" id="player2" />
+                        <Form.Check inline type="radio" required
+                            label="0" value="0" name="gameScore2" id="gameScore2" 
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({gameScore2: event.target.value})}/>
+                        <Form.Check inline type="radio" required
+                            label="15" value="15" name="gameScore2" id="gameScore2" 
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({gameScore2: event.target.value})}/>
+                        <Form.Check inline type="radio" required
+                            label="30" value="30" name="gameScore2" id="gameScore2" 
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({gameScore2: event.target.value})}/>
+                        <Form.Check inline type="radio" required
+                            label="40" value="40" name="gameScore2" id="gameScore2" 
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({gameScore2: event.target.value})}/>
+                        <Form.Check inline type="radio" required
+                            label="AD"  value="AD" name="gameScore2" id="gameScore2"
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({gameScore2: event.target.value})} />
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label as="legend" column sm={2}>Player 1 Serve or Return</Form.Label>
                     <Col sm={10}>
-                        <Form.Check inline type="radio" label="1st Serve" name="serve" id="player2" />
-                        <Form.Check inline type="radio" label="2nd Serve" name="serve" id="player2" />
-                        <Form.Check inline type="radio" label="Return" name="serve" id="player2" />
+                        <Form.Check inline type="radio" required
+                            label="1st Serve" value="1st Serve" name="serveResult" id="serveResult" 
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({serveResult: event.target.value})}/>
+                        <Form.Check inline type="radio" required
+                            label="2nd Serve" value="2nd Serve" name="serveResult" id="serveResult" 
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({serveResult: event.target.value})}/>
+                        <Form.Check inline type="radio" required
+                            label="Return" value="Return" name="serveResult" id="serveResult" 
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({serveResult: event.target.value})}/>
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label as="legend" column sm={2}>Point Result</Form.Label>
                     <Col sm={10}>
-                        <Form.Check inline type="radio" label="Winner" name="point" id="player2" />
-                        <Form.Check inline type="radio" label="Forced Error On Opponent" name="point" id="player2" />
-                        <Form.Check inline type="radio" label="Unforced Error" name="point" id="player2" />
+                        <Form.Check inline type="radio" required
+                            label="Winner" value="Winner" name="pointResult" 
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({pointResult: event.target.value})} />
+                        <Form.Check inline type="radio" required
+                            label="Forced Error On Opponent" value="Forced Error On Opponent"  name="pointResult"
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({pointResult: event.target.value})} />
+                        <Form.Check inline type="radio" required
+                            label="Unforced Error" value="Unforced Error" name="pointResult"
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({pointResult: event.target.value})}/>
+                        <Form.Check inline type="radio" required
+                            label="Double Fault" value="Double Fault" name="pointResult"
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({pointResult: event.target.value})}/>
                     </Col>
                 </Form.Group>
-
+         
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Coach's Comment</Form.Label>
                     <Col sm={10}>
-                    <Form.Control as="textarea" rows={3} placeholder="" />
+                        <Form.Control as="textarea" rows={3} placeholder="" 
+                        name="coachComment" value={this.state.coachComment}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({coachComment: event.target.value})}/>
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} className="mb-3">
                     <Col sm={{ span: 10, offset: 2 }}>
-                    <Button type="submit">Submit</Button>
+                        <Button type="submit">Submit</Button>
                     </Col>
                 </Form.Group>
 

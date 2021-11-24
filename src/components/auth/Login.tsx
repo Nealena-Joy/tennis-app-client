@@ -1,6 +1,8 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 
+
+
 export default class Login extends React.Component {
     constructor(props: any){
         super(props)
@@ -31,13 +33,18 @@ export default class Login extends React.Component {
         .then((json) => {
             console.log(json);
             let token = json.Session_Token;
-            let userRole = json.User_Role;
+            let userRole = json.UserDetails.userRole;
             localStorage.setItem('token', token);
             localStorage.setItem('userRole', userRole);
-            window.location.href = `http://localhost:3000/home-coach/`;
+            
+            //window.location.href = `http://localhost:3000/home-coach/`;   //  componentDidUpdate()?
         })
         .catch((error) => console.log("Login Error:", error))
     }
+    
+    // componentDidUpdate(){
+
+    // }
 
     render() {
     return (
@@ -52,7 +59,7 @@ export default class Login extends React.Component {
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control required type="password" placeholder="Password" name="password" onChange={this.handleChange} />
+                    <Form.Control type="password" placeholder="Password" name="password" onChange={this.handleChange} />
                 </Form.Group>
 
                 <Button variant="primary" type="submit">

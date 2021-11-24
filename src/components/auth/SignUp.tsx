@@ -1,33 +1,30 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 
-export default class SignUp extends React.Component {
+type UserSignUp = {
+    firstName: string,
+    lastName: string,
+    username: string,
+    password: string,
+    userRole: string
+}
+
+export default class SignUp extends React.Component<{}, UserSignUp> {
     constructor(props: any){
         super(props)
         this.state = {
+            firstName: '',
+            lastName: '',
             username: '',
             password: '',
             userRole: ''
         }
-        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleOption = this.handleOption.bind(this);
     };
-
-    handleChange(e: React.ChangeEvent<HTMLInputElement>){
-        this.setState({
-            [e.target.name]: e.target.value
-        });
-        console.log(this.state)
-    };
-
-    handleOption(e: React.ChangeEvent<HTMLFormElement>) {
-            this.setState({[e.target.name]: e.target.checked})
-    }
 
     handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        console.log(this.state)
+        //console.log(this.state)
 
         fetch(`https://tennis-app-njr.herokuapp.com/auth/register`,{
             method: 'POST',
@@ -37,15 +34,16 @@ export default class SignUp extends React.Component {
         .then((response) => response.json()) 
         .then((json) => {
             let token = json.Session_Token;
-            let userRole = json.User_Role;
+            let userRole = json.UserDetails.userRole;
             localStorage.setItem('token', token);
             localStorage.setItem('userRole', userRole);
-            //window.location.href = `http://localhost:3000/home-player/`;
         })
         .catch(error => {console.log("Sign Up Error:", error)})
     };
 
-    
+    // componentDidMount() {
+    //     this.handleSubmit();
+    // }
 
     render(){
     return (
@@ -53,25 +51,38 @@ export default class SignUp extends React.Component {
             <h3 style={{textAlign:"center",marginTop:"30px"}}>Create Account </h3>
             <Form onSubmit={this.handleSubmit} style={{margin:"30px"}}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control required type="email" placeholder="Enter email" name="username" onChange={this.handleChange}/>
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control required type="text" placeholder="Enter first name" name="firstName" value={this.state.firstName}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({firstName: event.target.value})}/>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control required type="text" placeholder="Enter last name" name="lastName" value={this.state.lastName}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({lastName: event.target.value})}/>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Username / Email</Form.Label>
+                    <Form.Control required type="email" placeholder="Enter email" name="username" value={this.state.username}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({username: event.target.value})}/>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control required type="password" placeholder="Password" name="password" onChange={this.handleChange}/>
+                    <Form.Control required type="password" placeholder="Password" name="password" value={this.state.password}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({password: event.target.value})}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Choose your account type</Form.Label>
                     <br/>
                     <div key="inline-radio" className="mb-3" style={{display:"inline-flex"}}>
-                    <Form.Check type="radio" label="Player" name="userRole" id="inline-radio-1" 
-                        onChange={this.handleChange} style={{marginRight:"30px"}}
+                    <Form.Check type="radio" label="Player" name="userRole" id="inline-radio-1" required
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({userRole: event.target.value})} 
+                        style={{marginRight:"30px"}}
                         value="Player" 
                         />
-                    <Form.Check type="radio" label="Coach" name="userRole" id="inline-radio-2" 
-                        onChange={this.handleChange}
+                    <Form.Check type="radio" label="Coach" name="userRole" id="inline-radio-2" required
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({userRole: event.target.value})}
                         value="Coach" 
                         />
                     </div>

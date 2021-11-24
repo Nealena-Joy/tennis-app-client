@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Button} from 'react-bootstrap';
+import {Table} from 'react-bootstrap';
 import trash from './trash.png';
 import edit from './edit.png';
 
@@ -33,6 +33,7 @@ export default class PointsList extends React.Component<{},Points> {
         }
     }
 
+    //!  GET ALL POINTS OF CURRENT PLAYER
     fetchPoints() {
         fetch(`https://tennis-app-njr.herokuapp.com/points/allpoints`, {
             method: 'GET',
@@ -54,6 +55,11 @@ export default class PointsList extends React.Component<{},Points> {
         this.fetchPoints()
     }
 
+    // componentDidUpdate(points: any) {
+    //     if (points.length !== this.state.points.length) {
+    //         this.fetchPoints();
+    //     } 
+    // }
 
 
     render() {
@@ -74,7 +80,7 @@ export default class PointsList extends React.Component<{},Points> {
                 </thead>
                 <tbody>
                 {this.state.points.map((point: PointDetails, index) => (
-                    <tr style={{verticalAlign:"middle"}}>
+                    <tr style={{verticalAlign:"middle"}} key={1+index}>
                         <td>{1+index}</td>
                         <td>{point.matchTitle}</td>
                         <td>{point.setScore}, {point.gameScore}</td>

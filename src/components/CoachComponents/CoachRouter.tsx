@@ -49,7 +49,8 @@ export default class CoachRouter extends React.Component<userProps> {
                         </Nav>
                         <Nav><Button onClick={this.clearLocalStorage}
                             style={{borderRadius:"50px",margin:"0 10px",width:"90px",textAlign:"center"}}>
-                            Log Out</Button></Nav>
+                            Log Out</Button>
+                        </Nav>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
