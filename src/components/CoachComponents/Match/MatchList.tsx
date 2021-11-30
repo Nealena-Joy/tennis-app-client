@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, Table, OverlayTrigger, Popover, Offcanvas} from 'react-bootstrap';
 import Delete from '../../assets/delete.png';
 import MatchEdit from './MatchEdit';
+import APIURL from '../../../helpers/environment';
 
 type Match = {
     token: string,
@@ -52,7 +53,7 @@ export default class MatchList extends React.Component<MatchProps,Match>{
     fetchMatches() {
         let token = localStorage.getItem('token')
 
-        fetch(`https://tennis-app-njr.herokuapp.com/matches/all-matches`, {
+        fetch(`${APIURL}/matches/all-matches`, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',

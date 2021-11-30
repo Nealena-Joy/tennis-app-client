@@ -1,5 +1,6 @@
 import React from 'react';
 import {Form, Button} from 'react-bootstrap';
+import APIURL from '../../../helpers/environment';
 
 type State ={
     title: string,
@@ -21,7 +22,7 @@ export default class ItemCreate extends React.Component<{}, State> {
         console.log("Create Item:", this.state);
         let token = localStorage.getItem('token');
 
-        fetch(`https://tennis-app-njr.herokuapp.com/plan/item`,{
+        fetch(`${APIURL}/plan/item`,{
             method: 'POST',
             body: JSON.stringify({improvementItem: {
                 title: this.state.title, 

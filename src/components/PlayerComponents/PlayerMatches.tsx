@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, Modal, Table} from 'react-bootstrap';
 import MatchPoints from './MatchDetails';
+import APIURL from '../../helpers/environment';
 
 type Match = {
     token: string,
@@ -37,7 +38,7 @@ export default class PlayerMatches extends React.Component<{},Match> {
     fetchMatches() {
         let token = localStorage.getItem('token')
 
-        fetch(`https://tennis-app-njr.herokuapp.com/matches/my-matches`, {
+        fetch(`${APIURL}/matches/my-matches`, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 import React from 'react';
 import '../assets/styles.css';
-import {Card, Button, CardGroup, Row, Col} from 'react-bootstrap';
+import {Card, Button, Row, Col} from 'react-bootstrap';
 import PlayerIMG from '../assets/tennis_clay2.png';
 import NetIMG from '../assets/racket.png';
 import ProfileIMG from '../assets/profiles.png';

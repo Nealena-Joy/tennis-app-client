@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import DeleteCurrentUser from './DeleteCurrentUser';
+import APIURL from '../../helpers/environment';
 
 type States = {
     firstName: string,
@@ -56,7 +57,7 @@ export default class CoachProfile extends React.Component<{},States> {
 
         if (this.state.password === this.state.passwordConfirm) {
             console.log("Handle Submit")
-            fetch(`https://tennis-app-njr.herokuapp.com/auth/${userID}`,{
+            fetch(`${APIURL}/auth/${userID}`,{
                 method: 'PUT',
                 body: JSON.stringify({user: {
                     firstName: this.state.firstName, 
@@ -112,7 +113,7 @@ export default class CoachProfile extends React.Component<{},States> {
         let userID = localStorage.getItem('userID');
 
        
-            fetch(`https://tennis-app-njr.herokuapp.com/auth/${userID}`,{
+            fetch(`${APIURL}/auth/${userID}`,{
                 method: 'PUT',
                 body: JSON.stringify({user: {
                     firstName: this.state.firstName, 

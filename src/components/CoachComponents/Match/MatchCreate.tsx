@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Row, FloatingLabel, Col, Button } from 'react-bootstrap';
 import MatchList from './MatchList';
 import '../../assets/styles.css';
+import APIURL from '../../../helpers/environment';
 
 type Player = {
     token: string,
@@ -49,7 +50,7 @@ export default class MatchesCreate extends React.Component<{},Player> {
     fetchPlayers() {
         let token = localStorage.getItem('token')
 
-        fetch(`https://tennis-app-njr.herokuapp.com/auth/all-players`,{
+        fetch(`${APIURL}/auth/all-players`,{
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',

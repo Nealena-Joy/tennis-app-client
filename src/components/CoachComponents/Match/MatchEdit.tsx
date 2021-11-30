@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { Form, FloatingLabel, Button } from 'react-bootstrap';
+import APIURL from '../../../helpers/environment';
 
 type MatchProps = {
     matchID?: string,
@@ -48,7 +49,7 @@ export default class MatchEdit extends React.Component<MatchProps,States> {
     fetchPlayers() {
         let token = localStorage.getItem('token')
 
-        fetch(`https://tennis-app-njr.herokuapp.com/auth/all-players`,{
+        fetch(`${APIURL}/auth/all-players`,{
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',

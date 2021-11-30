@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
+import APIURL from '../../helpers/environment';
 
 type UserSignUp = {
     firstName: string,
@@ -28,7 +29,7 @@ export default class SignUp extends React.Component<{}, UserSignUp> {
         e.preventDefault();
         //console.log(this.state)
 
-        fetch(`https://tennis-app-njr.herokuapp.com/auth/register`,{
+        fetch(`${APIURL}/auth/register`,{
             method: 'POST',
             body: JSON.stringify({user: this.state}),
             headers: new Headers({'Content-Type': 'application/json'})

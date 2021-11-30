@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import WarningImg from '../assets/warning-round-3.png';
 import GuestLandingPage from '../auth/GuestLandingPage';
+import APIURL from '../../helpers/environment';
 
 type States = {
     show: boolean,
@@ -39,7 +40,7 @@ export default class DeleteCurrentUser extends React.Component<{},States> {
                 deleteError: `Oops! Please type your username.`
             })
         } else if (this.state.username === trueUsername) {
-            fetch(`https://tennis-app-njr.herokuapp.com/auth/current-delete/${id}`,{
+            fetch(`${APIURL}/auth/current-delete/${id}`,{
                 method: 'DELETE',
                 headers: new Headers({
                     'Content-Type': 'application/json',

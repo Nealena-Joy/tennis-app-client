@@ -3,6 +3,7 @@ import {Offcanvas, Table, OverlayTrigger, Popover, Button} from 'react-bootstrap
 import trash from '../../assets/trash.png';
 import edit from '../../assets/edit.png';
 import PointEdit from './PointEdit';
+import APIURL from '../../../helpers/environment';
 
 type Points = {
     points: [],
@@ -52,7 +53,7 @@ export default class PointsList extends React.Component<{},Points> {
 
     //!  GET ALL POINTS OF CURRENT PLAYER
     fetchPoints() {
-        fetch(`https://tennis-app-njr.herokuapp.com/points/allpoints`, {
+        fetch(`${APIURL}/points/allpoints`, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',

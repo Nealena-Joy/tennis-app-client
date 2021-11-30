@@ -3,6 +3,7 @@ import {Card, Row, Col, Modal, Button,Form} from 'react-bootstrap';
 import Edit from '../../assets/edit-blue-2.png';
 import Delete from '../../assets/trash2.png';
 import ItemCreate from './ItemCreate';
+import APIURL from '../../../helpers/environment';
 
 type Items = {
     token: string,
@@ -48,7 +49,7 @@ export default class Plan extends React.Component<{},Items> {
     fetchItems() {
         let token = localStorage.getItem('token')
 
-        fetch(`https://tennis-app-njr.herokuapp.com/plan/my-items`, {
+        fetch(`${APIURL}/plan/my-items`, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -85,7 +86,7 @@ export default class Plan extends React.Component<{},Items> {
         // let id = this.state.itemID;
         // console.log("ID", this.state.itemID)
         console.log("Handle Submit")
-        fetch(`https://tennis-app-njr.herokuapp.com/plan/update/${itemID}`,{
+        fetch(`${APIURL}/plan/update/${itemID}`,{
             method: 'PUT',
             body: JSON.stringify({improvementItem: {
                 title: this.state.title, 
@@ -114,7 +115,7 @@ export default class Plan extends React.Component<{},Items> {
         e.preventDefault();
         let token = localStorage.getItem('token');
    
-        fetch(`https://tennis-app-njr.herokuapp.com/plan/delete/${itemID}`,{
+        fetch(`${APIURL}/plan/delete/${itemID}`,{
             method: 'DELETE',
             headers: new Headers({
                 'Content-Type': 'application/json',

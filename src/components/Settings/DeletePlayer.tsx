@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table, Modal, Button, Form, ToastContainer, Toast} from 'react-bootstrap';
 import WarningImg from '../assets/warning-round-3.png';
+import APIURL from '../../helpers/environment';
 
 type States = {
     Player_Details: [],
@@ -42,7 +43,7 @@ export default class DeletePlayer extends React.Component<{},States> {
     fetchPlayerDetails() {
         let token = localStorage.getItem('token')
 
-        fetch(`https://tennis-app-njr.herokuapp.com/auth/all-players`, {
+        fetch(`${APIURL}/auth/all-players`, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -83,7 +84,7 @@ export default class DeletePlayer extends React.Component<{},States> {
             })
         } else if (this.state.username === trueUsername) {
             console.log("Fetch");
-            fetch(`https://tennis-app-njr.herokuapp.com/auth/player-delete/${id}`,{
+            fetch(`${APIURL}/auth/player-delete/${id}`,{
                 method: 'DELETE',
                 body: JSON.stringify({user: 
                     {

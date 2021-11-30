@@ -1,6 +1,7 @@
 import React from 'react';
 import {Form, Row, Col, Button } from 'react-bootstrap';
 import '../../assets/styles.css';
+import APIURL from '../../../helpers/environment';
 
 type States = {
     All_Matches: [],
@@ -59,7 +60,7 @@ export default class Points extends React.Component<{}, States> {
     fetchMatches() {
         let token = localStorage.getItem('token')
 
-        fetch(`https://tennis-app-njr.herokuapp.com/matches/all-matches`, {
+        fetch(`${APIURL}/matches/all-matches`, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',

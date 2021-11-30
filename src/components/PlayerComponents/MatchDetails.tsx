@@ -1,4 +1,5 @@
 import React from 'react';
+import APIURL from '../../helpers/environment';
 
 type Props = {
     matchID?: string,
@@ -17,7 +18,7 @@ export default class MatchPoints extends React.Component<Props,{}> {
     fetchItems() {
         let token = localStorage.getItem('token')
 
-        fetch(`https://tennis-app-njr.herokuapp.com/plan/my-items`, {
+        fetch(`${APIURL}/plan/my-items`, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
