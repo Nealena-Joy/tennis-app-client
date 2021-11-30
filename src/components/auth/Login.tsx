@@ -50,7 +50,6 @@ export default class Login extends React.Component<{},Types> {
             localStorage.setItem('lastName', lastName);
             localStorage.setItem('username', username);
             localStorage.setItem('userID', userID);
-            window.location.href = `${APIURL}/home`
         })
         .catch((error) => {
             console.log("Login Error:", error)
