@@ -49,7 +49,7 @@ export default class SignUp extends React.Component<{}, UserSignUp> {
             localStorage.setItem('lastName', lastName);
             localStorage.setItem('username', username);
             localStorage.setItem('userID', userID);
-            window.location.href = `http://localhost:3000/home`
+            window.location.href = `${APIURL}/home`
         })
         .catch(error => {
             console.log("Sign Up Error:", error)
