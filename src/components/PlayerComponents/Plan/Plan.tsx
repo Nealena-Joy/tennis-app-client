@@ -1,10 +1,8 @@
 import React from 'react';
 import {Card, Row, Col, Modal, Button,Form} from 'react-bootstrap';
-import Edit from './edit-blue-2.png';
+import Edit from '../../assets/edit-blue-2.png';
+import Delete from '../../assets/trash2.png';
 import ItemCreate from './ItemCreate';
-import ItemEdit from './ItemEdit';
-import CloseBTN from './close.png';
-import { title } from 'process';
 
 type Items = {
     token: string,
@@ -15,19 +13,15 @@ type Items = {
     show: string,
     title: string,
     details: string,
-    itemID: string,
+    isHidden: string,
 }
-
-// type Props = {
-//     title: string,
-//     details: string
-// }
 
 type ItemDetails = {
     itemID: string,
     title: string,
     details: string,
-    playerID: string
+    playerID: string,
+    updatedAt: string,
 }
 
 export default class Plan extends React.Component<{},Items> {
@@ -42,20 +36,13 @@ export default class Plan extends React.Component<{},Items> {
             show: '0',
             title: '',
             details: '',
-            itemID: '',
-            
-  
+            isHidden: '0'
         }
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
     }
 
-    handleShow = (value: any) => {
-        this.setState({show: value})
-    }
-    handleClose = (value: any) => {
-        this.setState({show: '0'})
-    }
+    
 
     //!  GET ALL ITEMS OF CURRENT USER
     fetchItems() {
@@ -72,9 +59,8 @@ export default class Plan extends React.Component<{},Items> {
         .then((response) => {
             this.setState({
                 All_My_Items: response.All_My_Items,
-                //itemID: response.All_My_Items.item.itemID
             })
-            console.log("Items:", response.All_My_Items[0].itemID)
+            console.log("Items:", response.All_My_Items)
         })
         .catch((error) => console.log("Create Items Error:", error))
     }
@@ -83,19 +69,23 @@ export default class Plan extends React.Component<{},Items> {
         this.fetchItems()
     }
 
-    // componentDidUpdate(){
-    //     this.fetchItems()
-    // }
+    //!  TOGGLE MODAL TO EDIT ITEM
+    handleShow = (value: string) => {
+        this.setState({show: value})
+    }
+    handleClose = (value: string) => {
+        this.setState({show: '0'})
+    }
 
     //!  UPDATE ITEM INFO
-    handleSubmit( e: React.FormEvent<HTMLFormElement>) {
+    handleSubmit( e: React.MouseEvent<HTMLButtonElement>, itemID: string) {
         e.preventDefault();
         //console.log("Update Item:", this.state)
         let token = localStorage.getItem('token');
         // let id = this.state.itemID;
         // console.log("ID", this.state.itemID)
-
-        fetch(`https://tennis-app-njr.herokuapp.com/plan/update/${this.state.itemID}`,{
+        console.log("Handle Submit")
+        fetch(`https://tennis-app-njr.herokuapp.com/plan/update/${itemID}`,{
             method: 'PUT',
             body: JSON.stringify({improvementItem: {
                 title: this.state.title, 
@@ -108,91 +98,117 @@ export default class Plan extends React.Component<{},Items> {
         })
         .then(response => response.json())
         .catch((error) => console.log("Item Update Error:", error))
-        //this.setState({show: false})
+        this.setState({show: "false"})
     }
 
+    //!  TOGGLE DELETE CONFIRMATION
+    showConfirmation = (value: string) => {
+        this.setState({isHidden: value}) 
+    }
+    hideConfirmation = (value: string) => {
+        this.setState({isHidden: '0'})
+    }
+
+    //!  DELETE ITEM
+    handleDelete(e: React.MouseEvent<HTMLButtonElement>, itemID: string) {
+        e.preventDefault();
+        let token = localStorage.getItem('token');
+   
+        fetch(`https://tennis-app-njr.herokuapp.com/plan/delete/${itemID}`,{
+            method: 'DELETE',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': `${token}`
+            })
+        })
+        .then(response => response.json())
+        .catch((error) => console.log("Item Delete Error:", error))
+    }
+
+    componentDidUpdate(prevState: any){
+        if (prevState.All_My_Items !== this.state.All_My_Items){
+            this.fetchItems();
+        } 
+    }
 
     render() {
     return(
-        <div style={{margin:"30px"}}>
-            <p>Improvement Plan</p>
+        <div className="playerPlan" style={{overflowX:"hidden"}}>
+            <Row style={{padding:"90px 30px"}}>
+                <Col>
+                    <ItemCreate />
+                </Col>
+                <Col sm={7} style={{overflow:"scroll",height:"550px",overflowX:"hidden",margin:"10px 30px",backgroundColor:"#0082c34d",
+                padding:"1em",borderRadius:"5px"}} >
+                { this.state.All_My_Items.map((item: ItemDetails, index) => (
+                   
+                   <Card style={{marginBottom:"20px"}} key={index}>
+                        <Card.Header style={{backgroundColor:"#ceeaff",fontFamily:"marker"}}>
+                            <img src={Delete} alt="edit" style={{height:"22px"}} onClick={() => this.showConfirmation(item.itemID)}/> 
+                            &nbsp;	&nbsp;	
+                            <img src={Edit} alt="edit" style={{height:"22px"}} onClick={() => this.handleShow(item.itemID)}/>  
+    
+                        </Card.Header>
+                        <Card.Body>
+                            {item.title}<br/>
+                            {item.details}
 
-            <ItemCreate />
-
-            { this.state.All_My_Items.map((item: ItemDetails, index) => (
-                        
-                
-                <div>
-                <Card style={{marginBottom:"20px"}} key={index}>
-                    <Row>
-                        <Col>
-                            <Card.Header style={{backgroundColor:"lightyellow",fontFamily:"marker"}}>
-                          
-                                    <img src={Edit} alt="edit" style={{height:"22px"}} onClick={() => this.handleShow(item.itemID)}/>                                
-                             
-                          
+                            {(this.state.isHidden === item.itemID) && 
+                                <div key={item.itemID}>
+                                    <hr/>
+                                    <p style={{color:"#bd1900"}}>Are you sure you want to delete this item?</p>
+                                    <button style={{backgroundColor:"#BD0000",borderRadius:"50px",margin:"5px",
+                                        color:"whitesmoke",border:"none",height:"28px",width:"80px",padding:"0"}}
+                                        onClick={(e) => this.handleDelete(e, item.itemID)}>
+                                        Delete
+                                    </button>
+                                    <button  style={{backgroundColor:"transparent",borderRadius:"50px",margin:"5px",
+                                        color:"grey",border:"1px grey solid",height:"28px",width:"80px",padding:"0",}}
+                                        onClick={() => this.hideConfirmation(item.itemID)}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            }
+                        </Card.Body>
+                        <Card.Footer style={{height:"25px",padding:"0 1em",textAlign:"right"}}>
+                            <p style={{float:"inline-end"}}>Last Update: {(item.updatedAt).substring(0,10)}, at {(item.updatedAt).substring(11,16)}</p>
+                        </Card.Footer>
+                 
+                        <Modal key={index} show={this.state.show === item.itemID} onHide={this.handleClose}>
+                            <Modal.Header closeButton>
+                                Update Item
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form >
+    
+                                    <Form.Group>
+                                        <Form.Label>Item ID</Form.Label>
+                                        <Form.Control type="text" placeholder="" value={item.itemID} readOnly={true} name="itemID"/>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Label>Title</Form.Label>
+                                        <Form.Control type="text" placeholder="" defaultValue={item.title} name="title"
+                                        onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({title: event.target.value})}/>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Label>Details</Form.Label>
+                                        <Form.Control type="text" placeholder="" defaultValue={item.details} name="title"
+                                        onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({details: event.target.value})}/>
+                                    </Form.Group>
+    
+                                    <Button onClick={(e) => this.handleSubmit(e, item.itemID)}
+                                    style={{border:"none",borderRadius:"50px",marginTop:"30px",
+                                    width:"110px",textAlign:"center",color:"#F8F9F8",backgroundColor:"#008EC3"}}
+                                    >Update</Button>
                                 
-                            </Card.Header>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col sm={8}>
-                            <Card.Body>
-                                {item.title}<br/>
-                                {item.details}
-                            </Card.Body>
-                        </Col>
-                        <Col sm={4} style={{verticalAlign:"top"}}>
-                            <Card.Body style={{textAlign:"right"}}>
-                                <button disabled>View Comments</button>
-                            </Card.Body>
-                        </Col>
-                    </Row>
-
-                    <Modal key={index} show={this.state.show === item.itemID} onHide={this.handleClose}>
-                        <Modal.Header closeButton>
-                            Update Item
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form onSubmit={this.handleSubmit}>
-
-                                <Form.Group>
-                                    <Form.Label>Item ID</Form.Label>
-                                    <Form.Control type="text" placeholder="" value={item.itemID} readOnly={true} name="itemID"/>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>Title</Form.Label>
-                                    <Form.Control type="text" placeholder="" defaultValue={item.title} name="title"
-                                    onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({title: event.target.value})}/>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>Details</Form.Label>
-                                    <Form.Control type="text" placeholder="" defaultValue={item.details} name="title"
-                                    onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({details: event.target.value})}/>
-                                </Form.Group>
-
-                                <Button type="submit">Update</Button>
-                            
-                                
-                            </Form>
-                        </Modal.Body>
-                    </Modal>
-
-                </Card>
-
-                {console.log(this.state.itemID)}
-
-                
-
-
-
-                </div>
-            ))}
-
-            
-
-            
-
+                                    
+                                </Form>
+                            </Modal.Body>
+                        </Modal>
+                   </Card>
+               ))}
+                </Col>
+            </Row>
         </div>
     )}
 }

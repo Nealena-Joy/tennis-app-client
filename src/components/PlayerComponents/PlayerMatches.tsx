@@ -1,16 +1,22 @@
 import React from 'react';
-import {Button, Table} from 'react-bootstrap';
+import {Button, Modal, Table} from 'react-bootstrap';
+import MatchPoints from './MatchDetails';
 
 type Match = {
     token: string,
     matches: [],
     matchList: [],
+    show: string,
+    matchID: string,
+    text: string,
 }
 type MatchDetails = {
     id: string,
     matchTitle: string,
+    matchFormat: string,
     matchScore: string,
-    playerID: string
+    playerID: string,
+    matchWinner: string
 }
 
 export default class PlayerMatches extends React.Component<{},Match> {
@@ -20,6 +26,10 @@ export default class PlayerMatches extends React.Component<{},Match> {
             token: '',
             matchList: [],
             matches: [],
+            show: '0',
+            matchID: '',
+            text: '',
+            
         }
     }
 
@@ -36,10 +46,16 @@ export default class PlayerMatches extends React.Component<{},Match> {
         })
         .then((response) => response.json())
         .then((response) => {
-            this.setState({
-                matches: response.All_My_Matches
-            })
-            console.log("Matches:", response.All_My_Matches)
+            
+            console.log("Matches:", response.All_My_Matches);
+            if (response.length > 0){
+                console.log("Matches")
+                this.setState({matches: response.All_My_Matches})
+                console.log("Matches:", response.All_My_Matches)
+            } else {
+                this.setState({text: "You currently do not have any matches. Kindly contact one of the coaches to set a match."})
+                console.log("NO MATCHES:", response.All_My_Matches)
+            }
         })
         .catch((error) => console.log("Matches Error:", error))
     }
@@ -48,21 +64,30 @@ export default class PlayerMatches extends React.Component<{},Match> {
         this.fetchMatches()
     }
 
+    //!  TOGGLE MODAL TO EDIT ITEM
+    handleShow = (value: string) => {
+        this.setState({show: value})
+    }
+    handleClose = (value: string) => {
+        this.setState({show: '0'})
+    }
 
     render() {
+        if (this.state.matches.length > 0){
     return(
-        <div style={{margin:"30px"}}>
+        <div className="playerMatches" style={{padding:"80px 30px"}}>
             <h4>My Matches</h4>
-            <br/>
-            <Table responsive>
+
+            <Table responsive style={{backgroundColor:"#F8F9F8",borderRadius:"5px"}}>
                 <thead>
                     <tr style={{textAlign:"center"}}>
                         <th>#</th>
                         <th>Match</th>
+                        <th>Format</th>
                         <th>Score</th>
                         <th>Winner</th>
-                        <th>Comments</th>
-                        <th>Match Details</th>
+                        <th>Overall Comments</th>
+                        <th>Match Analysis</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,15 +96,39 @@ export default class PlayerMatches extends React.Component<{},Match> {
                     <tr style={{verticalAlign:"middle",textAlign:"center"}}>
                         <td>{1+index}</td>
                         <td>{match.matchTitle}</td>
+                        <td>{match.matchFormat}</td>
                         <td>{match.matchScore}</td>
-                        <td>Joy</td>
+                        <td>{match.matchWinner}</td>
                         <td>Good job overall. You executed what we practiced last week.</td>
-                        <td><Button>View Details</Button></td>
+                        <td>
+                            <Button onClick={() => this.handleShow(match.id)}>
+                                View
+                            </Button>
+
+                            <Modal fullscreen={true} key={index} show={this.state.show === match.id} onHide={this.handleClose}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Match Details</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <MatchPoints matchID={match.id} matchTitle={match.matchTitle} matchScore={match.matchScore} matchFormat={match.matchFormat} matchWinner={match.matchWinner}/>
+                                </Modal.Body>
+                            </Modal>                            
+
+
+                        </td>
                     </tr>
                 ))}
                     
                 </tbody>
             </Table>
         </div>
-    )}
-}
+
+    )} else {
+        return(
+            <div className="playerMatches" style={{padding:"80px 30px",color:"whitesmoke"}}>
+                <h4>My Matches</h4>
+                <p style={{margin:"30px 0"}}><i>{this.state.text}</i></p>
+            </div>
+        )
+    }
+}}

@@ -6,7 +6,8 @@ type UserSignUp = {
     lastName: string,
     username: string,
     password: string,
-    userRole: string
+    userRole: string,
+    SignUpError: string,
 }
 
 export default class SignUp extends React.Component<{}, UserSignUp> {
@@ -17,7 +18,8 @@ export default class SignUp extends React.Component<{}, UserSignUp> {
             lastName: '',
             username: '',
             password: '',
-            userRole: ''
+            userRole: '',
+            SignUpError: '',
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     };
@@ -35,39 +37,49 @@ export default class SignUp extends React.Component<{}, UserSignUp> {
         .then((json) => {
             let token = json.Session_Token;
             let userRole = json.UserDetails.userRole;
+            let firstName = `${json.UserDetails.firstName}`;
+            let lastName = `${json.UserDetails.lastName}`;
+            let username = `${json.UserDetails.username}`;
+            let userID = `${json.UserDetails.id}`
+
             localStorage.setItem('token', token);
             localStorage.setItem('userRole', userRole);
+            localStorage.setItem('firstName', firstName);
+            localStorage.setItem('lastName', lastName);
+            localStorage.setItem('username', username);
+            localStorage.setItem('userID', userID);
+            window.location.href = `http://localhost:3000/home`
         })
-        .catch(error => {console.log("Sign Up Error:", error)})
+        .catch(error => {
+            console.log("Sign Up Error:", error)
+            this.setState({
+                SignUpError: "Username/Email already in use."
+            })
+        })
     };
-
-    // componentDidMount() {
-    //     this.handleSubmit();
-    // }
 
     render(){
     return (
         <div>
             <h3 style={{textAlign:"center",marginTop:"30px"}}>Create Account </h3>
+            <p style={{color:"red",textAlign:"center",verticalAlign:"middle",height:"30px"}}>
+                {this.state.SignUpError}
+            </p>
             <Form onSubmit={this.handleSubmit} style={{margin:"30px"}}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>First Name</Form.Label>
-                    <Form.Control required type="text" placeholder="Enter first name" name="firstName" value={this.state.firstName}
+                    <Form.Control required type="text" placeholder="First name" name="firstName" value={this.state.firstName}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({firstName: event.target.value})}/>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Last Name</Form.Label>
-                    <Form.Control required type="text" placeholder="Enter last name" name="lastName" value={this.state.lastName}
+                    <Form.Control required type="text" placeholder="Last name" name="lastName" value={this.state.lastName}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({lastName: event.target.value})}/>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Username / Email</Form.Label>
-                    <Form.Control required type="email" placeholder="Enter email" name="username" value={this.state.username}
+                    <Form.Control required type="email" placeholder="Email" name="username" value={this.state.username}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({username: event.target.value})}/>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
                     <Form.Control required type="password" placeholder="Password" name="password" value={this.state.password}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({password: event.target.value})}/>
                 </Form.Group>
@@ -87,15 +99,13 @@ export default class SignUp extends React.Component<{}, UserSignUp> {
                         />
                     </div>
                 </Form.Group>
-
-                <Button variant="primary" type="submit">
+ 
+                <Button variant="primary" type="submit"
+                style={{border:"1px #AF8165 solid",borderRadius:"50px",width:"100px",textAlign:"center",color:"#F8F9F8",backgroundColor:"#AF8165"}}>
                     Sign Up
                 </Button>
             </Form>
-            <hr/>
-            <div>
-                <p style={{textAlign:"center",color:"gray"}}>Already have an account? <a href="/">Log In</a></p>
-            </div>
+
         </div>
     )}
 }

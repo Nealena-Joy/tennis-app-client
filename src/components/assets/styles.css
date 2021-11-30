@@ -1,0 +1,70 @@
+.header {
+    padding-top: 100px;
+}
+
+.landing, .CoachHome, .CMatchCreate, .PointsCreate {
+    background-image: url(./AdobeStock_213567841.jpeg);
+    background-size: cover;
+    background-attachment: fixed;
+    height: 1500px;
+    color: #015371;
+}
+.player-home, .playerMatches, .playerPlan {
+    background-image: url(./AdobeStock_213567841.jpeg);
+    background-size: cover;
+    background-attachment: fixed;
+    height: 1500px;
+    color: #015371;
+}
+.slide{
+    opacity: 0.6;
+    box-shadow: 0 0 100px #000000;
+}
+.my-modal .modal-content{
+    color:#bdbdbd 
+}
+
+/* .CoachHome {
+    background-image: url(./court.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: blue;
+    height: 900px;
+} */
+
+.Coach-Header {
+    padding-top: 100px;
+}
+
+.Coach-Text {
+    color: whitesmoke;
+}
+
+/* .CMatchCreate{
+    background-image: url(./court.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 900px;
+    padding-top: 3em;
+} */
+.MatchList{
+    margin: 0 auto;
+    width: 80%;
+    padding: 0 1em;
+    background-color: #f8f9f8f7;
+}
+
+/* .PointsCreate {
+    background-image: url(./court.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 900px;
+    padding-top: 3em;
+} */
+
+.player-home {
+    color: #ffffff20
+}

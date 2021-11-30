@@ -1,26 +1,14 @@
 import React from 'react';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import CoachHome from './CoachHome';
 import MatchCreate from './Match/MatchCreate';
 import Events from './EventsCreate/Events';
-import Points from './Points/Points';
-import Logo from '../assets/Untitled_Artwork.png';
+import PointsMain from './Points/PointsMain';
+import SettingsMain from '../Settings/SettingsMain';
+import Logo from '../assets/logo_3.png';
 
-
-interface userProps {
-    token: string,
-    userRole: string
-}
-
-export default class CoachRouter extends React.Component<userProps> {
-    constructor(props: userProps){
-        super(props)
-        this.state = {
-            token: localStorage.getItem('token'),
-            userRole: localStorage.getItem('userRole')
-        }
-    }
+export default class CoachRouter extends React.Component {
 
     clearLocalStorage() {
         localStorage.clear();
@@ -28,38 +16,63 @@ export default class CoachRouter extends React.Component<userProps> {
     }
 
     render() {
+    const firstName = localStorage.getItem('firstName');
     return(
         <Router>
 
-            <Navbar fixed="top" bg="light" expand="lg" style={{backgroundColor:"rgba(240, 255, 255, 0.502)"}}>
+            <Navbar fixed="top" expand="lg" style={{backgroundColor:"transparent"}} >
                 <Container>
                     <Navbar.Brand href="#">
-                        <img alt="" src={Logo} width="100"  className="d-inline-block align-top"
-                            style={{}}/>
+                        <img alt="" src={Logo} height="32"  className="d-inline-block align-top" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav>
-                            <Link to="/home-coach" className="site-link">Home</Link>
+
+                        <Nav style={{borderLeft:"3px solid #556C71"}}>
+                            <Link to="/home" className="site-link" style={{color:"#F8F9F8"}}>
+                                Home
+                            </Link>
                         </Nav>
                         <Nav className="me-auto">
-                            <Link to="/match-list" className="site-link">Matches</Link>
-                            <Link to="/match-analysis" className="site-link">Match Analysis</Link>
-                            <Link to="/events" className="site-link" style={{pointerEvents:"none",color:"grey"}} >Events</Link>
+                            <Link to="/match-list" className="site-link" style={{color:"#F8F9F8"}}>
+                                Matches
+                            </Link>
+                            <Link to="/match-analysis" className="site-link" style={{color:"#F8F9F8"}}>
+                                Player Analysis
+                            </Link>
                         </Nav>
-                        <Nav><Button onClick={this.clearLocalStorage}
-                            style={{borderRadius:"50px",margin:"0 10px",width:"90px",textAlign:"center"}}>
-                            Log Out</Button>
+
+                        <Nav>
+                        <NavDropdown id="nav-dropdown-custom" title={<span style={{color:"whitesmoke"}}>Hi, Coach {firstName}</span>} align="end" style={{color:"whitesmoke"}}>
+                            <NavDropdown.Item href="#action/3.1">
+                                <button style={{backgroundColor:"transparent",border:"none"}}>
+                                    <Link to="/settings" style={{textDecoration:"none"}}>Settings</Link>
+                                </button>
+                            </NavDropdown.Item>
+                            <NavDropdown.Item href="#action/3.2">
+                                <button disabled style={{backgroundColor:"transparent",border:"none",pointerEvents:"none"}}>
+                                    Send A Feedback 
+                                </button>
+                            </NavDropdown.Item>
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item href="#action/3.4">
+                                <button style={{backgroundColor:"transparent",border:"none"}}
+                                    onClick={this.clearLocalStorage}>
+                                    Log Out
+                                </button>
+                            </NavDropdown.Item>
+                        </NavDropdown>
                         </Nav>
+
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
 
             <Switch>
-                <Route exact path="/home-coach"><CoachHome /></Route>
+                <Route exact path="/home"><CoachHome /></Route>
                 <Route exact path="/match-list"><MatchCreate /></Route>
-                <Route exact path="/match-analysis"><Points /></Route>
-                <Route exact path="/events"><Events /></Route>
+                <Route exact path="/match-analysis"><PointsMain /></Route>
+                <Route exact path="/settings"><SettingsMain /></Route>
             </Switch>
         </Router>
     )}

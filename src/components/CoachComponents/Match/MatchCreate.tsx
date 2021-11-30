@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Row, FloatingLabel, Col, Button } from 'react-bootstrap';
 import MatchList from './MatchList';
+import '../../assets/styles.css';
 
 type Player = {
     token: string,
@@ -11,13 +12,6 @@ type Player = {
     name: string,
     value: string,
     match: [],
-    matchFormat: string,
-    matchScore: string,
-    matchTitle: string,
-    matchWinner: string,
-}
-type MatchDetails = {
-    playerID: string,
     matchFormat: string,
     matchScore: string,
     matchTitle: string,
@@ -47,11 +41,11 @@ export default class MatchesCreate extends React.Component<{},Player> {
             matchTitle: '',
             matchWinner: '',
             match: [],
-            
         }
         this.formSubmit = this.formSubmit.bind(this);
     }
 
+    //!  FETCH LIST OF PLAYERS & THEIR INFO
     fetchPlayers() {
         let token = localStorage.getItem('token')
 
@@ -71,13 +65,10 @@ export default class MatchesCreate extends React.Component<{},Player> {
         .catch((error) => console.log("Player Error:", error))
     }
 
+    //!  SHOW PLAYERS ON FORM DROP DOWN
     componentDidMount(){
         this.fetchPlayers();
     }
-
-    // componentWillUnmount(){
-    //     this.formSubmit();
-    // }
 
     //! CREAT MATCH
     formSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -105,19 +96,22 @@ export default class MatchesCreate extends React.Component<{},Player> {
         .then((response) => {
             console.log("Match Created:",response);
         })
-        .catch((error) => console.log("Match Error:", error))
+        .catch((error) => console.log("Match Error:", error));
     }
-
-
 
     render() {
     return(
-        <div>
-            <Form onSubmit={this.formSubmit}>
-            <Row className="g-2" style={{width:"80%",margin:"40px auto",padding:"15px",backgroundColor:"lightskyblue"}}>
-                <h4>Matches</h4>
- 
-                <Col md>
+        <div className="CMatchCreate" style={{paddingTop:"50px"}}>
+            <Form onSubmit={this.formSubmit} className="MatchCreateForm"
+            style={{paddingTop:"30px",width:"80%",margin:"auto"}}>
+                <h3 style={{color:"whitesmoke"}}>Create a match</h3>
+                <p style={{color:"#697d82",lineHeight:"0.9",fontStyle:"italic",margin:"30px 0"}}>
+                    * Match Title Example: Player 1 vs Player 2 [2021-12-01]<br/>
+                    * Final Score Example: 8-6 <br/>
+                    * Player 1 or the first player mentioned is always the one being evaluated
+                </p>
+            <Row className="g-2"> 
+                <Col sm style={{marginRight:"10px"}}>
                     <FloatingLabel controlId="floatingSelectGrid" label="Select a player">
                         <Form.Select aria-label="Floating label select example" 
                             required  
@@ -127,26 +121,14 @@ export default class MatchesCreate extends React.Component<{},Player> {
 
                             {this.state.players.map((player: PlayerDetails, index) => (
                                 <option key={1+index} value={player.id} >
-                                   {player.username}
+                                   {player.firstName} {player.lastName}&nbsp;&nbsp;({player.username})
                                 </option>
                             ))}
 
                         </Form.Select>
                     </FloatingLabel>
-                    <br/>
-                    <FloatingLabel controlId="floatingInputGrid" label="Match Title">
-                        <Form.Control type="text" placeholder="Ex: Player 1 vs Player 2" 
-                            value={this.state.matchTitle} name="matchTitle" required
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({matchTitle: event.target.value})} />
-                    </FloatingLabel>
-                    <br/>
-                    <FloatingLabel controlId="floatingInputGrid" label="Winner">
-                            <Form.Control type="text" placeholder="8-3" required name="matchWinner"
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({matchWinner: event.target.value})} />
-                    </FloatingLabel>
                 </Col>
- 
-                <Col>
+                <Col sm>
                     <FloatingLabel controlId="floatingInputGrid" label="Match Format">
                         <Form.Select aria-label="Floating label select example" 
                             required name="matchFormat" value={this.state.matchFormat}
@@ -154,33 +136,48 @@ export default class MatchesCreate extends React.Component<{},Player> {
 
                             <option>Open this select menu</option>
                             <option value="Short Set (1st to 4 games)" >Short Set (1st to 4 games)</option>
-                            <option value="Pro-Set (8 game)" disabled>Pro-Set (8 game)</option>
-                            <option value="Pro-Set (10 game)<" disabled>Pro-Set (10 game)</option>
-                            <option value="Best of 3 sets" disabled>Best of 3 sets</option>
+                            <option value="Pro-Set (8 game)" >Pro-Set (8 game)</option>
+                            <option value="Pro-Set (10 game)<" >Pro-Set (10 game)</option>
+                            <option value="Best of 3 sets" >Best of 3 sets</option>
                         </Form.Select>
                     </FloatingLabel>
-                    <br/>
+                </Col>
+            </Row>
+            
+            <Row className="g-2" style={{marginTop:"1em"}}>
+                <Col sm>
+                    <FloatingLabel controlId="floatingInputGrid" label="Match Title">
+                        <Form.Control type="text" placeholder="Ex: Player 1 vs Player 2" 
+                            value={this.state.matchTitle} name="matchTitle" required
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({matchTitle: event.target.value})} />
+                    </FloatingLabel>
+                </Col>
+                <Col sm>
+                    <FloatingLabel controlId="floatingInputGrid" label="Winner">
+                            <Form.Control type="text" placeholder="8-3" required name="matchWinner"
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({matchWinner: event.target.value})} />
+                    </FloatingLabel>
+                </Col>
+                <Col sm>
                     <FloatingLabel controlId="floatingInputGrid" label="Final Score">
                         <Form.Control type="text" placeholder="8-3" required name="matchScore"
                         onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({matchScore: event.target.value})} />
                     </FloatingLabel>
                 </Col>
-
+            </Row>
+            <Row>
                 <hr style={{color:"transparent"}}/>
-                <Button style={{width:"150px",margin:"10px"}} type="submit">Add Match</Button>
-                <hr/>
-
-                <p style={{color:"grey",lineHeight:"0.9",fontStyle:"italic"}}>
-                    Note: <br/>
-                    * Match Title Example: Player 1 vs Player 2 <br/>
-                    * Final Score Example: 8-6 <br/>
-                    * Player 1 or the first player mentioned is always the one being evaluated
-                </p>
+                <Button type="submit"
+                style={{border:"none",borderRadius:"50px",margin:"30px 10px",
+                width:"110px",textAlign:"center",color:"#F8F9F8",backgroundColor:"#008EC3"}}>
+                    Add Match
+                </Button>
+                <hr style={{color:"whitesmoke"}}/>
             </Row>
             </Form>
-            <div>
-                <MatchList />
-            </div>
+
+            <MatchList />
+         
         </div>
     )
     }

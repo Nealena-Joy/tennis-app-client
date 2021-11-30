@@ -1,12 +1,16 @@
 import React from 'react';
-import {Table} from 'react-bootstrap';
-import trash from './trash.png';
-import edit from './edit.png';
+import {Offcanvas, Table, OverlayTrigger, Popover, Button} from 'react-bootstrap';
+import trash from '../../assets/trash.png';
+import edit from '../../assets/edit.png';
+import PointEdit from './PointEdit';
 
 type Points = {
     points: [],
     point: [],
-    isLoaded: boolean
+    isLoaded: boolean,
+    matchId: string,
+    show: string,
+    isHidden: string,
 }
 type PointDetails = {
     coachComment: string,
@@ -19,7 +23,8 @@ type PointDetails = {
     updatedAt: string,
     matchId: string,
     matchTitle: string,
-    id: string
+    id: string,
+    pointID: string,
 }
 
 export default class PointsList extends React.Component<{},Points> {
@@ -29,8 +34,20 @@ export default class PointsList extends React.Component<{},Points> {
             points: [],
             point: [],
             isLoaded: true,
-
+            matchId: '',
+            show: '0',
+            isHidden: '0',
         }
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+    }
+
+    //!  TOGGLE MODAL TO EDIT ITEM
+    handleShow = (value: string) => {
+        this.setState({show: value})
+    }
+    handleClose = (value: string) => {
+        this.setState({show: '0'})
     }
 
     //!  GET ALL POINTS OF CURRENT PLAYER
@@ -46,21 +63,38 @@ export default class PointsList extends React.Component<{},Points> {
             this.setState({
                points: response
             })
-            console.log("Points:", this.state)
+            //console.log("Points:", this.state)
         })
         .catch((error) => console.log("Points Error:", error))
     }
-
     componentDidMount() {
         this.fetchPoints()
     }
 
-    // componentDidUpdate(points: any) {
-    //     if (points.length !== this.state.points.length) {
-    //         this.fetchPoints();
-    //     } 
-    // }
+    //!  TOGGLE DELETE CONFIRMATION
+    showConfirmation = (value: string) => {
+        this.setState({isHidden: value}) 
+    }
+    hideConfirmation = (value: string) => {
+        this.setState({isHidden: '0'})
+    }
 
+    //!  DELETE POINT
+    handleDelete(e: React.MouseEvent<HTMLButtonElement>, pointID: string) {
+        e.preventDefault();
+        let token = localStorage.getItem('token');
+        console.log("Handle Delete", pointID)
+        fetch(`https://tennis-app-njr.herokuapp.com/points/delete/${pointID}`, { 
+            method: 'DELETE',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': `${token}`
+            })
+        })
+        .then(response => {response.json()})
+        .catch(error => {console.log("Delete:",error)});
+
+    }
 
     render() {
     return(
@@ -88,17 +122,62 @@ export default class PointsList extends React.Component<{},Points> {
                         <td>{point.pointResult}</td>
                         <td>{point.coachComment}</td>
                         <td>
-                            <button style={{border:"none",backgroundColor:"transparent"}}>
-                                <img src={trash} alt="delete" style={{height:"20px"}}/></button> 
+
+                            <OverlayTrigger placement="top" trigger="click" key={point.pointID} rootClose={true}
+                            overlay={(
+                                <Popover style={{textAlign:"center",width:"200px",padding:"5px",boxShadow:"4px 4px 4px #303030e9",}}>
+                                    <p>Are you sure you want to delete this point?</p>
+                                    <p><i><b>{point.setScore}, {point.gameScore}</b></i></p>
+                                 
+                                    <Button style={{backgroundColor:"#BD0000",borderRadius:"50px",margin:"5px",
+                                        color:"whitesmoke",border:"none",height:"28px",width:"80px",padding:"0"}}
+                                        onClick={(e) => this.handleDelete(e, point.pointID)}>
+                                            Delete
+                                    </Button>
+                                    <Button style={{backgroundColor:"transparent",borderRadius:"50px",margin:"5px",
+                                        color:"grey",border:"1px grey solid",height:"28px",width:"80px",padding:"0",}}
+                                        onClick={() => document.body.click()}>
+                                            Cancel
+                                    </Button>
+                                </Popover>
+                            )}>
+                                <button style={{border:"none",backgroundColor:"transparent"}}>
+                                    <img src={trash} alt="delete" style={{height:"20px"}}/>
+                                </button> 
+                            </OverlayTrigger>
+
+
+
+
                             &nbsp;&nbsp;
-                            <button style={{border:"none",backgroundColor:"transparent"}}>
+                            <button onClick={()=>this.handleShow(point.pointID)}
+                                style={{border:"none",backgroundColor:"transparent"}}>
                                 <img src={edit} alt="delete" style={{height:"25px"}}/>
                             </button>
                         </td>
+
+                        <Offcanvas key={index} show={this.state.show === point.pointID} placement="end" 
+                            onHide={this.handleClose}>
+                            <Offcanvas.Header>
+                                <Offcanvas.Title>Edit Point Details</Offcanvas.Title>
+                            </Offcanvas.Header>
+                            <Offcanvas.Body>
+                                <PointEdit pointID={point.pointID} matchId={point.matchId} setScore={point.setScore}
+                                gameScore={point.gameScore} serveResult={point.serveResult} pointResult={point.pointResult}
+                                coachComment={point.coachComment}/>
+                            </Offcanvas.Body>
+                        </Offcanvas>
+
+
                     </tr>
                 ))}
                 </tbody>
                 </Table>
+
+
+
+
+                
         </div>
     )}
 }

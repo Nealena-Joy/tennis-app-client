@@ -3,6 +3,7 @@ import './App.css';
 import GuestLandingPage from './components/auth/GuestLandingPage';
 import CoachRouter from './components/CoachComponents/CoachRouter';
 import PlayerRouter from './components/PlayerComponents/PlayerRouter';
+import Footer from './components/auth/Footer';
 require('dotenv').config();
 
 const App: React.FunctionComponent = () => {
@@ -18,19 +19,17 @@ const App: React.FunctionComponent = () => {
         return(<GuestLandingPage />)
       } else {
           if (userRole === 'Coach') {
-            return(<CoachRouter token={token} userRole={userRole}/>)
+            return(<CoachRouter />)
           } else {
             return(<PlayerRouter />)
           }
       }
     }
 
-
-
     return (      
         <div className="appMain">
             {protectedViews()}
-            <div style={{textAlign:"center",backgroundColor:"#",height:"500px"}}>Footer Here</div>
+            <Footer />
         </div>
     )
 }
