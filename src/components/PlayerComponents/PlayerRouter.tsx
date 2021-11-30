@@ -27,7 +27,7 @@ export default class PlayerRouter extends React.Component {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <Nav>
-                                <Link to="/home" className="site-link" style={{color:"#F8F9F8",borderLeft:"3px solid #556C71",paddingLeft:"15px"}}>
+                                <Link to="/home-player" className="site-link" style={{color:"#F8F9F8",borderLeft:"3px solid #556C71",paddingLeft:"15px"}}>
                                     Home
                                 </Link>
                             </Nav> 
@@ -66,11 +66,12 @@ export default class PlayerRouter extends React.Component {
             </Navbar>
 
             <Switch>
-                <Route exact path="/home"><PlayerHome /></Route>
-                <Route exact path="/my-matches"><PlayerMatches /></Route>
-                <Route exact path="/plan"><Plan /></Route>
-                <Route exact path="/settings"><SettingsMain /></Route>
+                <Route path="/home-player"><PlayerHome /></Route>
+                <Route path="/my-matches"><PlayerMatches /></Route>
+                <Route path="/plan"><Plan /></Route>
+                <Route path="/settings"><SettingsMain /></Route>
             </Switch>
+
         </Router>
     )}
 }

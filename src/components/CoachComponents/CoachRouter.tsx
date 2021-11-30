@@ -3,7 +3,6 @@ import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import CoachHome from './CoachHome';
 import MatchCreate from './Match/MatchCreate';
-import Events from './EventsCreate/Events';
 import PointsMain from './Points/PointsMain';
 import SettingsMain from '../Settings/SettingsMain';
 import Logo from '../assets/logo_3.png';
@@ -68,12 +67,13 @@ export default class CoachRouter extends React.Component {
                 </Container>
             </Navbar>
 
-            <Switch>
-                <Route exact path="/home"><CoachHome /></Route>
-                <Route exact path="/match-list"><MatchCreate /></Route>
-                <Route exact path="/match-analysis"><PointsMain /></Route>
-                <Route exact path="/settings"><SettingsMain /></Route>
-            </Switch>
+                <Switch>
+                    <Route path="/home"><CoachHome /></Route>
+                    <Route path="/match-list"><MatchCreate /></Route>
+                    <Route path="/match-analysis"><PointsMain /></Route>
+                    <Route path="/settings"><SettingsMain /></Route>
+                </Switch>
+
         </Router>
     )}
 }

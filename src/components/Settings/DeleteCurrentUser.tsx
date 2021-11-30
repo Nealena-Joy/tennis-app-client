@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
-import { Redirect } from 'react-router';
 import WarningImg from '../assets/warning-round-3.png';
 import GuestLandingPage from '../auth/GuestLandingPage';
 
