@@ -8,6 +8,7 @@ import Banner3 from '../assets/players-3.png';
 import {Container, Row, Col, Carousel, Card} from 'react-bootstrap';
 import NavbarLanding from './NavbarLanding';
 import targetArea from '../assets/target_areas.jpg';
+import matches from '../assets/matches.jpg';
 
 export default class GuestLandingPage extends React.Component {
 
@@ -74,7 +75,7 @@ export default class GuestLandingPage extends React.Component {
                     </Col>
                     <Col>
                         <Card style={{backgroundColor:"transparent"}}>
-                            <Card.Img variant="top" src={targetArea} />
+                            <Card.Img variant="top" src={matches} />
                             <Card.Body>
                             <Card.Text>
                             <h1 style={{color:"#F8F9F8"}}>Get a point by point analysis for specific match.</h1>

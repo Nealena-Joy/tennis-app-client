@@ -1,5 +1,6 @@
 import React from 'react';
 import APIURL from '../../helpers/environment';
+import { Table } from 'react-bootstrap';
 
 type Props = {
     matchID?: string,
@@ -7,42 +8,59 @@ type Props = {
     matchScore?: string,
     matchFormat?: string,
     matchWinner?: string,
+    points?: any,
 }
-type States = {
-    matchID: string,
+type PointDetails = {
+    coachComment: string,
+    coachID: string,
+    gameScore: string,
+    pointResult: string,
+    serveResult: string,
+    setScore: string,
+    createdAt: string,
+    updatedAt: string,
+    matchId: string,
+    matchTitle: string,
+    id: string,
+    pointID: string,
 }
 
 export default class MatchPoints extends React.Component<Props,{}> {
-    
-    //!  GET ALL POINT DETAILS OF CURRENT MATCH
-    fetchItems() {
-        let token = localStorage.getItem('token')
-
-        fetch(`${APIURL}/plan/my-items`, {
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'Authorization': `${token}`
-            })
-        })
-        .then((response) => response.json())
-        .then((response) => {
-            this.setState({
-                All_My_Items: response.All_My_Items,
-            })
-            console.log("Items:", response.All_My_Items)
-        })
-        .catch((error) => console.log("Create Items Error:", error))
-    }
 
     render(){
     return(
         <div>
-            <h1>Match Details</h1>
-            {this.props.matchID}<br/>
-            {this.props.matchScore}
-            {this.props.matchFormat}
-            {this.props.matchWinner}
+            <h5>{this.props.matchTitle}</h5>
+            <p>
+                Final Score: {this.props.matchScore}<br/>
+                Winner: {this.props.matchWinner}
+            </p>
+            <Table striped bordered hover size="sm">
+                <thead>
+                    <tr>
+                    <th>#</th>
+                    <th>Score</th>
+                    <th>Serve/Return</th>
+                    <th>Point Result</th>
+                    <th>Comment(s)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                { this.props.points.map((point: PointDetails, index: number) => ( 
+                    <tr>
+                        <td>{1+index}</td>
+                        <td>{point.setScore}, {point.gameScore}</td>
+                        <td>{point.serveResult}</td>
+                        <td>{point.pointResult}</td>
+                        <td>{point.coachComment}</td>
+                    </tr>
+
+
+
+
+                ))}
+                </tbody>
+            </Table>
         </div>
     )}
 }

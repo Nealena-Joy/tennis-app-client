@@ -10,6 +10,7 @@ type Match = {
     show: string,
     matchID: string,
     text: string,
+    points: []
 }
 type MatchDetails = {
     id: string,
@@ -17,7 +18,8 @@ type MatchDetails = {
     matchFormat: string,
     matchScore: string,
     playerID: string,
-    matchWinner: string
+    matchWinner: string,
+    points: []
 }
 
 export default class PlayerMatches extends React.Component<{},Match> {
@@ -30,7 +32,7 @@ export default class PlayerMatches extends React.Component<{},Match> {
             show: '0',
             matchID: '',
             text: '',
-            
+            points: []
         }
     }
 
@@ -68,7 +70,7 @@ export default class PlayerMatches extends React.Component<{},Match> {
     render() {
     return(
         <div className="playerMatches" style={{padding:"80px 30px"}}>
-            <h4>My Matches</h4>
+            <h3 style={{color:"whitesmoke"}}>My Matches</h3>
 
             <Table responsive style={{backgroundColor:"#F8F9F8",borderRadius:"5px"}}>
                 <thead>
@@ -93,7 +95,9 @@ export default class PlayerMatches extends React.Component<{},Match> {
                         <td>{match.matchWinner}</td>
                         <td>Good job overall. You executed what we practiced last week.</td>
                         <td>
-                            <Button onClick={() => this.handleShow(match.id)}>
+                            <Button onClick={() => this.handleShow(match.id)}
+                            style={{border:"none",borderRadius:"50px",
+                            width:"110px",textAlign:"center",color:"#F8F9F8",backgroundColor:"#008EC3"}}>
                                 View
                             </Button>
 
@@ -102,7 +106,7 @@ export default class PlayerMatches extends React.Component<{},Match> {
                                     <Modal.Title>Match Details</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
-                                    <MatchPoints matchID={match.id} matchTitle={match.matchTitle} matchScore={match.matchScore} matchFormat={match.matchFormat} matchWinner={match.matchWinner}/>
+                                    <MatchPoints points={match.points} matchID={match.id} matchTitle={match.matchTitle} matchScore={match.matchScore} matchFormat={match.matchFormat} matchWinner={match.matchWinner}/>
                                 </Modal.Body>
                             </Modal>                            
 
