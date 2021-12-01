@@ -43,7 +43,6 @@ export default class MatchPoints extends React.Component<Props,{}> {
             {this.props.matchScore}
             {this.props.matchFormat}
             {this.props.matchWinner}
-
         </div>
     )}
 }

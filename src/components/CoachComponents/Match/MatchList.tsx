@@ -15,7 +15,8 @@ type Match = {
     show: string,
     matchID: string,
     text: string,
-    Matches: []
+    Matches: [],
+    didUpdate: boolean,
 }
 type MatchProps = {
     match?: object,
@@ -43,7 +44,8 @@ export default class MatchList extends React.Component<MatchProps,Match>{
             isHidden: '0', 
             show: '0',
             text: '',
-            Matches: []
+            Matches: [], 
+            didUpdate: false,
         }
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -88,16 +90,20 @@ export default class MatchList extends React.Component<MatchProps,Match>{
         e.preventDefault();
         let token = localStorage.getItem('token');
         //console.log("Handle Delete", id)
-        fetch(`https://tennis-app-njr.herokuapp.com/matches/delete/${id}`, { 
+        fetch(`${APIURL}/matches/delete/${id}`, { 
             method: 'DELETE',
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Authorization': `${token}`
             })
         })
-        .then(response => response.json())
+        .then(response => {response.json(); this.setState({didUpdate: true})})
         .catch(error => {console.log("Delete:",error)});
-        this.fetchMatches();
+    }
+    componentDidUpdate() {
+        if (this.state.didUpdate === true) {
+            this.fetchMatches();
+        }
     }
 
     //!  TOGGLE MODAL TO EDIT ITEM
@@ -109,7 +115,6 @@ export default class MatchList extends React.Component<MatchProps,Match>{
     }
 
     render() {
-        // if (this.state.matches.length > 0){
     return(
         <div className="MatchList" style={{backgroundColor:"transparent",paddingTop:"5em"}}>
             <h3 style={{color:"whitesmoke"}}>

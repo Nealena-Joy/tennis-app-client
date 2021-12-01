@@ -4,8 +4,10 @@ import Slide from '../assets/tennis_players_5.png';
 import SignUpIMG from '../assets/sign-in.jpg';
 import signup from '../assets/sign-up-page.jpg';
 import Banner2 from '../assets/players_2.png';
+import Banner3 from '../assets/players-3.png';
 import {Container, Row, Col, Carousel, Card} from 'react-bootstrap';
 import NavbarLanding from './NavbarLanding';
+import targetArea from '../assets/target_areas.jpg';
 
 export default class GuestLandingPage extends React.Component {
 
@@ -43,7 +45,7 @@ export default class GuestLandingPage extends React.Component {
                     <Carousel.Item>
                         <img
                         className="d-block w-100 slide"
-                        src={Slide}
+                        src={Banner3}
                         alt="Third slide"
                         />
                         <Carousel.Caption>
@@ -72,16 +74,18 @@ export default class GuestLandingPage extends React.Component {
                     </Col>
                     <Col>
                         <Card style={{backgroundColor:"transparent"}}>
+                            <Card.Img variant="top" src={targetArea} />
                             <Card.Body>
                             <Card.Text>
                             <h1 style={{color:"#F8F9F8"}}>Get a point by point analysis for specific match.</h1>
-                            <h5 style={{color:"#F8F9F8"}}><i>When a coach review your match, he/she inputs the score, the point result, and feedback on what could have been done.</i></h5>
+                            <h5 style={{color:"#F8F9F8"}}><i>Coaches will watch your match and give feedback on what could have been done.</i></h5>
                             </Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
                     <Col>
                         <Card style={{backgroundColor:"transparent"}}>
+                            <Card.Img variant="top" src={targetArea} />
                             <Card.Body>
                             <Card.Text>
                             <h1 style={{color:"#F8F9F8"}}>Use the "Target Area" feature to keep you on track.</h1>

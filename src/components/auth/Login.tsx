@@ -1,9 +1,6 @@
 import React from 'react';
-import { Form, Button, Modal } from 'react-bootstrap';
-import { Redirect } from 'react-router';
+import { Form, Button } from 'react-bootstrap';
 import APIURL from '../../helpers/environment';
-import SignUp from './SignUp';
-import CoachHome from '../CoachComponents/CoachHome';
 
 type Types = {
     username: string,

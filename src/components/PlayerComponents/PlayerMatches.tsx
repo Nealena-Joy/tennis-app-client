@@ -47,16 +47,8 @@ export default class PlayerMatches extends React.Component<{},Match> {
         })
         .then((response) => response.json())
         .then((response) => {
-            
             console.log("Matches:", response.All_My_Matches);
-            if (response.length > 0){
-                console.log("Matches")
-                this.setState({matches: response.All_My_Matches})
-                console.log("Matches:", response.All_My_Matches)
-            } else {
-                this.setState({text: "You currently do not have any matches. Kindly contact one of the coaches to set a match."})
-                console.log("NO MATCHES:", response.All_My_Matches)
-            }
+            this.setState({matches: response.All_My_Matches})
         })
         .catch((error) => console.log("Matches Error:", error))
     }
@@ -74,7 +66,6 @@ export default class PlayerMatches extends React.Component<{},Match> {
     }
 
     render() {
-        if (this.state.matches.length > 0){
     return(
         <div className="playerMatches" style={{padding:"80px 30px"}}>
             <h4>My Matches</h4>
@@ -123,13 +114,5 @@ export default class PlayerMatches extends React.Component<{},Match> {
                 </tbody>
             </Table>
         </div>
-
-    )} else {
-        return(
-            <div className="playerMatches" style={{padding:"80px 30px",color:"whitesmoke"}}>
-                <h4>My Matches</h4>
-                <p style={{margin:"30px 0"}}><i>{this.state.text}</i></p>
-            </div>
-        )
-    }
-}}
+    )}
+}

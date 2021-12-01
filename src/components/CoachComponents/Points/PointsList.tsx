@@ -117,7 +117,7 @@ export default class PointsList extends React.Component<{},Points> {
                 {this.state.points.map((point: PointDetails, index) => (
                     <tr style={{verticalAlign:"middle",backgroundColor:"lightgrey"}} key={1+index}>
                         <td >{1+index}</td>
-                        <td >{point.id}</td>
+                        <td >{point.pointID}</td>
                         <td >{point.setScore}, {point.gameScore}</td>
                         <td >{point.serveResult}</td>
                         <td >{point.pointResult}</td>
