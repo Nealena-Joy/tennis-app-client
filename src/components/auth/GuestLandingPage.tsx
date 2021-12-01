@@ -1,11 +1,10 @@
 import React from 'react';
 import '../assets/styles.css';
 import Slide from '../assets/tennis_players_5.png';
-import SignUpIMG from '../assets/sign-in.jpg';
 import signup from '../assets/sign-up-page.jpg';
 import Banner2 from '../assets/players_2.png';
 import Banner3 from '../assets/players-3.png';
-import {Container, Row, Col, Carousel, Card} from 'react-bootstrap';
+import {Container, Row, Col, Carousel, Card, Form, Button} from 'react-bootstrap';
 import NavbarLanding from './NavbarLanding';
 import targetArea from '../assets/target_areas.jpg';
 import matches from '../assets/matches.jpg';
@@ -98,22 +97,39 @@ export default class GuestLandingPage extends React.Component {
                 </Row>
                 </Container>
 
-                <Container id="contact" style={{paddingTop:"6em"}}>
-                    <div>
-                        <h1 style={{fontSize:"45px",textAlign:"center",color:"#AF8165"}}>
-                            <u>Contact Us</u>
-                        </h1>
-                    </div>
-                    <Row style={{}}>
-                        <Col style={{margin:"4em"}}>
-                            <img alt="sign-up-info" src={SignUpIMG} style={{display:"block",margin:"0 auto",width:"50%"}}/>
-                        </Col>
-                        <Col style={{margin:"4em"}}>
-                            <h1 style={{color:"#F8F9F8"}}>Sign up to have one of our coaches analyze your matches.</h1>
-                            <h5 style={{color:"#F8F9F8"}}><i>Already have a coach? Ask him/her to sign up to TennisLab to start recording your results!</i></h5>
-                        </Col>
-                    </Row>
-                </Container>
+                <div id="contact" style={{paddingTop:"5em"}}>
+                    <h1 style={{fontSize:"45px",textAlign:"center",color:"#AF8165"}}>
+                        <u>CONTACT US</u>
+                    </h1>
+                </div>
+                <Row style={{width:"50%",margin:"5em auto",color:"whitesmoke"}}>
+                    <Col>
+                        <Form>
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                <Form.Label>Email address</Form.Label>
+                                <Form.Control type="email" placeholder="Enter email" />
+                                <Form.Text className="text-muted">
+                                We'll never share your email with anyone else.
+                                </Form.Text>
+                            </Form.Group>
+
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Message</Form.Label>
+                                <Form.Control as="textarea" placeholder="Your message here" />
+                            </Form.Group>
+
+                            <Button variant="primary" type="submit"
+                            style={{border:"none",borderRadius:"50px",marginTop:"30px",
+                            width:"110px",textAlign:"center",color:"#F8F9F8",backgroundColor:"#008EC3"}}>
+                                SEND
+                            </Button>
+                        </Form>
+                    </Col>
+                    <Col>
+                        <h1>Let's Connect!</h1>
+                        <p>Got questions or want to meet up? Contact me directly or fill out the form to send me an email.</p>
+                    </Col>
+                </Row>
 
             </div>
         ) 
