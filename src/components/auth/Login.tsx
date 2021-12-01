@@ -54,7 +54,7 @@ export default class Login extends React.Component<{},Types> {
             localStorage.setItem('lastName', lastName);
             localStorage.setItem('username', username);
             localStorage.setItem('userID', userID);
-            window.location.href = `http://localhost:3000/home`;
+            window.location.href = `https://tennis-app-client-njr.herokuapp.com/home`;
         })
         .catch((error) => {
             console.log("Login Error:", error)
