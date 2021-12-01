@@ -1,3 +1,19 @@
+App: TennisLab
+
+Mission Statement
+
+Tennis is an expensive sport. For players who really want to improve, they would have to hire a personal coach to train with regularly and to show up for matches.
+
+This app is for tennis players who want to improve their game by having matches analyzed (point by point) by a coach and obtaining feedback to ultimately create a detailed plan on how the player could improve.
+
+Check out the app here: https://tennis-app-client-njr.herokuapp.com/
+
+* Created using class components and life cycle methods with Typescript.
+* Designed using React Bootstrap.
+
+
+
+________________________________________
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
