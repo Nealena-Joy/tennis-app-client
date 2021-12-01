@@ -33,7 +33,10 @@ export default class ItemCreate extends React.Component<{}, State> {
                 'Authorization': `${token}`
             })
         })
-        .then(response => response.json())
+        .then(response => {
+            response.json();
+            this.setState({title: '', details: ''})
+        })
         .catch((error) => console.log("Create Item Error:", error))
     }
 
@@ -58,7 +61,7 @@ export default class ItemCreate extends React.Component<{}, State> {
                         onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({details: event.target.value})} />
                     </Form.Group>
 
-                    <Button type="submit" style={{border:"grey 1px solid",borderRadius:"50px",marginTop:"30px",
+                    <Button type="submit" style={{border:"none",borderRadius:"50px",marginTop:"30px",
                     width:"110px",textAlign:"center",color:"#F8F9F8",backgroundColor:"#008EC3"}}>
                         Add
                     </Button>

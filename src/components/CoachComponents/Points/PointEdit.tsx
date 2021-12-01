@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
+import APIURL from '../../../helpers/environment';
 
 type PointProps = {
 
@@ -61,7 +62,7 @@ export default class PointEdit extends React.Component<PointProps,States> {
     fetchMatches() {
         let token = localStorage.getItem('token')
 
-        fetch(`https://tennis-app-njr.herokuapp.com/matches/all-matches`, {
+        fetch(`${APIURL}/matches/all-matches`, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -87,7 +88,7 @@ export default class PointEdit extends React.Component<PointProps,States> {
         console.log("Submit:", this.state)
         let token = localStorage.getItem('token');
 
-        fetch(`https://tennis-app-njr.herokuapp.com/points/update/${this.props.pointID}`,{
+        fetch(`${APIURL}/points/update/${this.props.pointID}`,{
             method: 'PUT',
             body: JSON.stringify({point: 
                 {   
@@ -195,7 +196,9 @@ export default class PointEdit extends React.Component<PointProps,States> {
                 </Form.Group>
                 <Form.Group as={Row} style={{height:"100px"}}>
                     <Col sm={3} >
-                        <Button onClick={(e)=>this.updatePoint(e)}>
+                        <Button onClick={(e)=>this.updatePoint(e)}
+                        style={{border:"none",borderRadius:"50px",marginTop:"30px",
+                        width:"110px",textAlign:"center",color:"#F8F9F8",backgroundColor:"#008EC3"}}>
                             Update
                         </Button>
                     </Col>

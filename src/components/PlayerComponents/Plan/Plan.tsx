@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card, Row, Col, Modal, Button,Form} from 'react-bootstrap';
 import Edit from '../../assets/edit-blue-2.png';
-import Delete from '../../assets/trash2.png';
+import Delete from '../../assets/delete.png';
 import ItemCreate from './ItemCreate';
 import APIURL from '../../../helpers/environment';
 
@@ -145,14 +145,13 @@ export default class Plan extends React.Component<{},Items> {
                    
                    <Card style={{marginBottom:"20px"}} key={index}>
                         <Card.Header style={{backgroundColor:"#ceeaff",fontFamily:"marker"}}>
-                            <img src={Delete} alt="edit" style={{height:"22px"}} onClick={() => this.showConfirmation(item.itemID)}/> 
+                            <p style={{fontSize:"20px",float:"left",height:"13px"}}><u>{item.title}</u></p>
+                            <img src={Edit} alt="edit" style={{height:"22px",float:"right"}} onClick={() => this.handleShow(item.itemID)}/>  
                             &nbsp;	&nbsp;	
-                            <img src={Edit} alt="edit" style={{height:"22px"}} onClick={() => this.handleShow(item.itemID)}/>  
-    
+                            <img src={Delete} alt="edit" style={{height:"22px",float:"right",marginRight:"10px"}} onClick={() => this.showConfirmation(item.itemID)}/> 
                         </Card.Header>
                         <Card.Body>
-                            {item.title}<br/>
-                            {item.details}
+                            <p>{item.details}</p>
 
                             {(this.state.isHidden === item.itemID) && 
                                 <div key={item.itemID}>
@@ -172,12 +171,12 @@ export default class Plan extends React.Component<{},Items> {
                             }
                         </Card.Body>
                         <Card.Footer style={{height:"25px",padding:"0 1em",textAlign:"right"}}>
-                            <p style={{float:"inline-end"}}>Last Update: {(item.updatedAt).substring(0,10)}, at {(item.updatedAt).substring(11,16)}</p>
+                            <p style={{float:"inline-end"}}>Last Update: {(item.updatedAt).substring(0,10)}</p>
                         </Card.Footer>
                  
                         <Modal key={index} show={this.state.show === item.itemID} onHide={this.handleClose}>
                             <Modal.Header closeButton>
-                                Update Item
+                                <Modal.Title>Update Item</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
                                 <Form >
@@ -186,14 +185,14 @@ export default class Plan extends React.Component<{},Items> {
                                         <Form.Label>Item ID</Form.Label>
                                         <Form.Control type="text" placeholder="" value={item.itemID} readOnly={true} name="itemID"/>
                                     </Form.Group>
-                                    <Form.Group>
+                                    <Form.Group style={{marginTop:"1em"}}>
                                         <Form.Label>Title</Form.Label>
                                         <Form.Control type="text" placeholder="" defaultValue={item.title} name="title"
                                         onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({title: event.target.value})}/>
                                     </Form.Group>
-                                    <Form.Group>
+                                    <Form.Group style={{marginTop:"1em"}}>
                                         <Form.Label>Details</Form.Label>
-                                        <Form.Control type="text" placeholder="" defaultValue={item.details} name="title"
+                                        <Form.Control as="textarea" placeholder="" defaultValue={item.details} name="title"
                                         onChange={(event: React.ChangeEvent<HTMLInputElement>)=>this.setState({details: event.target.value})}/>
                                     </Form.Group>
     

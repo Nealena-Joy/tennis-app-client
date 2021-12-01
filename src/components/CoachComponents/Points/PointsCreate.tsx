@@ -89,7 +89,7 @@ export default class Points extends React.Component<{}, States> {
         let token = localStorage.getItem('token');
         //let gameScore = `${this.state.gameScore1}-${this.state.gameScore2}`;
 
-        fetch(`https://tennis-app-njr.herokuapp.com/points/point`,{
+        fetch(`${APIURL}/points/point`,{
             method: 'POST',
             body: JSON.stringify({point: 
                 {
@@ -112,21 +112,26 @@ export default class Points extends React.Component<{}, States> {
         })
         .catch(error => {console.log("Sign Up Error:", error)})
     };
-
-    // componentDidMount() {
-    //     this.handleSubmit();
-    // }
+    componenDidMount(event: React.FormEvent<HTMLFormElement>){
+        this.handleSubmit(event);
+    }
 
     render() {
     return(
-        <div className="PointsCreate">
-            <h4>Match Analysis</h4>
+        <div className="PointsCreate" style={{paddingTop:"50px"}}>
+            <div style={{paddingTop:"30px",width:"80%",margin:"auto"}}>
+                <h3 style={{color:"whitesmoke"}}>Player Analysis </h3>
+                <a href="#points" style={{color:"yellow"}}>(View Points)</a>
+                <p style={{color:"#697d82",lineHeight:"0.9",fontStyle:"italic",margin:"10px 0"}}>
+                    * Select a match to analyze.<br/>
+                    * Fill in the required fields.<br/>
+                    * Add your analysis on the current point, if needed.
+                </p>
+            </div>
             <Form onSubmit={this.handleSubmit}
-                style={{width:"80%",margin:"40px auto",backgroundColor:"lightblue",padding:"10px"}}>
-                <h4>Add a point to a match</h4>
-
+            style={{width:"80%",margin:"40px auto",backgroundColor:"lightblue",padding:"50px",borderRadius:"5px"}}>
                 <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
-                    <Form.Label column sm={2}>Match</Form.Label>
+                    <Form.Label column sm={2}>Match*</Form.Label>
                     <Col sm={10}>
                         <Form.Select aria-label="Floating label select example" 
                             required 
@@ -154,7 +159,7 @@ export default class Points extends React.Component<{}, States> {
                 </Form.Group>
 
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label as="legend" column sm={2}>Game Score Player 1</Form.Label>
+                    <Form.Label as="legend" column sm={2}>Game Score Player 1*</Form.Label>
                     <Col sm={10} style={{display:"inline"}}>
                         <Form.Check inline type="radio" required
                             label="0" value="0" name="gameScore1" id="gameScore1"
@@ -175,7 +180,7 @@ export default class Points extends React.Component<{}, States> {
                 </Form.Group>
 
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label as="legend" column sm={2}>Game Score Player 2</Form.Label>
+                    <Form.Label as="legend" column sm={2}>Game Score Player 2*</Form.Label>
                     <Col sm={10}>
                         <Form.Check inline type="radio" required
                             label="0" value="0" name="gameScore2" id="gameScore2" 
@@ -196,7 +201,7 @@ export default class Points extends React.Component<{}, States> {
                 </Form.Group>
 
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label as="legend" column sm={2}>Player 1 Serve or Return</Form.Label>
+                    <Form.Label as="legend" column sm={2}>Player 1 Serve or Return*</Form.Label>
                     <Col sm={10}>
                         <Form.Check inline type="radio" required
                             label="1st Serve" value="1st Serve" name="serveResult" id="serveResult" 
@@ -211,7 +216,7 @@ export default class Points extends React.Component<{}, States> {
                 </Form.Group>
 
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label as="legend" column sm={2}>Point Result</Form.Label>
+                    <Form.Label as="legend" column sm={2}>Point Result*</Form.Label>
                     <Col sm={10}>
                         <Form.Check inline type="radio" required
                             label="Winner" value="Winner" name="pointResult" 
@@ -239,7 +244,10 @@ export default class Points extends React.Component<{}, States> {
 
                 <Form.Group as={Row} className="mb-3">
                     <Col sm={{ span: 10, offset: 2 }}>
-                        <Button type="submit">Submit</Button>
+                        <Button type="submit"
+                        style={{border:"none",borderRadius:"50px",marginTop:"30px",
+                        width:"110px",textAlign:"center",color:"#F8F9F8",backgroundColor:"#008EC3"}}>
+                            Submit</Button>
                     </Col>
                 </Form.Group>
 

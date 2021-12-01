@@ -3,7 +3,7 @@ import {Tabs, Tab} from 'react-bootstrap';
 import Profile from './Profile';
 import EventsSettings from './EventsSettings';
 import DeletePlayer from './DeletePlayer';
-import SettingsIcon from '../assets/settings-1.png';
+import SettingsIcon from '../assets/settings.png';
 
 
 export default class SettingsMain extends React.Component {
@@ -16,7 +16,7 @@ export default class SettingsMain extends React.Component {
                     <div style={{width:"90%",margin:"auto",padding:"90px 0 10px 0"}}>
                         <div style={{display:"inline-block"}}>
                             <img alt="settings" src={SettingsIcon} style={{height:"30px",float:"left"}}/>
-                            <h3 style={{float:"left",verticalAlign:"middle"}}>&nbsp;Settings</h3>
+                            <h3 style={{float:"left",verticalAlign:"middle",color:"whitesmoke"}}>&nbsp;Settings</h3>
                         </div>
                     </div>
                     <div style={{width:"90%",margin:"auto"}}>
@@ -41,7 +41,7 @@ export default class SettingsMain extends React.Component {
                     <div style={{width:"90%",margin:"auto",padding:"90px 0 10px 0"}}>
                         <div style={{display:"inline-block"}}>
                             <img alt="settings" src={SettingsIcon} style={{height:"30px",float:"left"}}/>
-                            <h3 style={{float:"left",verticalAlign:"middle",color:"#bdbdbd"}}>&nbsp;Settings</h3>
+                            <h3 style={{float:"left",verticalAlign:"middle",color:"whitesmoke"}}>&nbsp;Settings</h3>
                         </div>
                     </div>
                     <div style={{width:"90%",margin:"auto"}}>

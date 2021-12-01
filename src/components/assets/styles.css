@@ -1,14 +1,43 @@
 .header {
     padding-top: 100px;
 }
-
-.landing, .CoachHome, .CMatchCreate, .PointsCreate {
+.landing {
     background-image: url(./AdobeStock_213567841.jpeg);
     background-size: cover;
     background-attachment: fixed;
-    height: 1500px;
+    height: 2000px;
     color: #015371;
 }
+
+.CoachHome {
+    background-image: url(./AdobeStock_213567841.jpeg);
+    background-size: cover;
+    background-attachment: fixed;
+    height: 700px;
+    color: #015371;
+}
+.CMatchCreate{
+    background-image: url(./AdobeStock_213567841.jpeg);
+    background-size: cover;
+    background-attachment: fixed;
+    height: 1200px;
+    color: #015371;
+}
+.PointsCreate, .pointsList {
+    background-image: url(./AdobeStock_213567841.jpeg);
+    background-size: cover;
+    background-attachment: fixed;
+    height: 900px;
+    color: #015371;
+}
+.pointsList {
+    background-image: url(./AdobeStock_213567841.jpeg);
+    background-size: cover;
+    background-attachment: fixed;
+    height: 750px;
+    color: #015371;
+}
+
 .player-home, .playerMatches, .playerPlan {
     background-image: url(./AdobeStock_213567841.jpeg);
     background-size: cover;
@@ -67,4 +96,12 @@
 
 .player-home {
     color: #ffffff20
+}
+
+.footer {
+    background-image: url(./AdobeStock_213567841.jpeg);
+    background-size: cover;
+    background-attachment: fixed;
+    padding-bottom: 1em;
+    color: white;
 }

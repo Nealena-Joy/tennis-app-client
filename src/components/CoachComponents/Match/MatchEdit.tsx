@@ -42,7 +42,6 @@ export default class MatchEdit extends React.Component<MatchProps,States> {
             updateStatus: '',
         }
         this.formSubmit = this.formSubmit.bind(this);
-
     }
 
     //!  FETCH LIST OF PLAYERS & THEIR INFO
@@ -59,7 +58,8 @@ export default class MatchEdit extends React.Component<MatchProps,States> {
         .then((response) => response.json())
         .then((response) => {
             this.setState({
-                players: response.PlayerDetails});
+                players: response.PlayerDetails
+            });
             console.log("Players:",response.PlayerDetails);
         })
         .catch((error) => console.log("Player Error:", error))
@@ -76,7 +76,7 @@ export default class MatchEdit extends React.Component<MatchProps,States> {
         console.log("Submit", this.state)
         let token = localStorage.getItem('token')
 
-        fetch(`https://tennis-app-njr.herokuapp.com/matches/update/${this.props.matchID}`,{
+        fetch(`${APIURL}/matches/update/${this.props.matchID}`,{
             method: 'PUT',
             body: JSON.stringify({match: 
                 {
@@ -114,16 +114,16 @@ export default class MatchEdit extends React.Component<MatchProps,States> {
     render(){
     return(
         <div>
-            <p style={{color:"red",textAlign:"center",verticalAlign:"middle",height:"30px"}}>
+            <p style={{color:"red",textAlign:"center",verticalAlign:"middle",height:"25px"}}>
                 {this.state.updateStatus}
             </p>
             <Form className="MatchCreateForm"
-            style={{paddingTop:"30px",margin:"auto"}}>
-                <FloatingLabel controlId="floatingInputGrid" label="Match ID*">
+            style={{paddingTop:"10px",margin:"auto"}}>
+                <FloatingLabel controlId="floatingInputGrid" label="Match ID*" style={{margin:"1em auto"}}>
                     <Form.Control type="text" required name="matchID"
                         readOnly={true} placeholder="" value={this.props.matchID} />
                 </FloatingLabel>
-                <FloatingLabel controlId="floatingSelectGrid" label="Select a player*">
+                <FloatingLabel controlId="floatingSelectGrid" label="Select a player*" style={{margin:"1em auto"}}>
                     <Form.Select aria-label="Floating label select example" 
                         required name="playerID"
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>)=>this.setState({playerID: e.target.value})}>
@@ -137,20 +137,20 @@ export default class MatchEdit extends React.Component<MatchProps,States> {
 
                     </Form.Select>
                 </FloatingLabel>
-                <FloatingLabel controlId="floatingInputGrid" label="Match Format*">
+                <FloatingLabel controlId="floatingInputGrid" label="Match Format*" style={{margin:"1em auto"}}>
                     <Form.Select aria-label="Floating label select example" 
                         required name="matchFormat" value={this.state.matchFormat}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>)=>this.setState({matchFormat: e.target.value})} >
 
                         <option>Open this select menu</option>
                         <option value="Short Set (1st to 4 games)" >Short Set (1st to 4 games)</option>
-                        <option value="Pro-Set (8 game)" disabled>Pro-Set (8 game)</option>
-                        <option value="Pro-Set (10 game)<" disabled>Pro-Set (10 game)</option>
-                        <option value="Best of 3 sets" disabled>Best of 3 sets</option>
+                        <option value="Pro-Set (8 game)" >Pro-Set (8 game)</option>
+                        <option value="Pro-Set (10 game)<" >Pro-Set (10 game)</option>
+                        <option value="Best of 3 sets" >Best of 3 sets</option>
                         
                     </Form.Select>
                 </FloatingLabel>
-                <FloatingLabel controlId="floatingInputGrid" label="Match Title*">
+                <FloatingLabel controlId="floatingInputGrid" label="Match Title*" style={{margin:"1em auto"}}>
                     <Form.Control type="text" placeholder="Ex: Player 1 vs Player 2" 
                         name="matchTitle" required 
                         value={this.state.matchTitle}
@@ -161,7 +161,7 @@ export default class MatchEdit extends React.Component<MatchProps,States> {
                         value={this.state.matchWinner}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>)=>this.setState({matchWinner: e.target.value})} />
                 </FloatingLabel>
-                <FloatingLabel controlId="floatingInputGrid" label="Final Score*">
+                <FloatingLabel controlId="floatingInputGrid" label="Final Score*" style={{margin:"1em auto"}}>
                     <Form.Control type="text" placeholder="8-3" required name="matchScore"
                         value={this.state.matchScore}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>)=>this.setState({matchScore: e.target.value})} />

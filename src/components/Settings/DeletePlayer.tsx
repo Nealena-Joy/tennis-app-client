@@ -122,7 +122,7 @@ export default class DeletePlayer extends React.Component<{},States> {
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Last, First Name</th>
+                            <th>Name</th>
                             <th>Username / Email</th>
                             <th>Player ID</th>
                             <th>Date Registered</th>
@@ -137,10 +137,13 @@ export default class DeletePlayer extends React.Component<{},States> {
                             <td>{player.lastName}, {player.firstName}</td>
                             <td>{player.username}</td>
                             <td>{player.id}</td>
-                            <td>{player.createdAt}</td>
+                            <td>{(player.createdAt).substring(0,10)}</td>
                             <td>{Object.keys(player.matches).length}</td>
                             <td>
-                                <button onClick={() => this.handleShow(player.id)}>Delete</button>
+                                <button onClick={() => this.handleShow(player.id)}
+                                style={{border:"none",backgroundColor:"transparent",color:"red"}}>
+                                    <u>Delete</u>
+                                </button>
 
                                 <Modal backdrop="static" centered key={index} 
                                     show={this.state.show === player.id} onHide={this.handleClose}>

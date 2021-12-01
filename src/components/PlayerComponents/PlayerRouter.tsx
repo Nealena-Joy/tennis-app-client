@@ -11,7 +11,7 @@ export default class PlayerRouter extends React.Component {
 
     clearLocalStorage() {
         localStorage.clear();
-        window.location.href = `${process.env.BASE_URL}`;
+        window.location.href = `https://tennis-app-client-njr.herokuapp.com/`;
     }
 
     render() {

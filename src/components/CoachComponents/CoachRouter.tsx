@@ -11,7 +11,7 @@ export default class CoachRouter extends React.Component {
 
     clearLocalStorage() {
         localStorage.clear();
-        window.location.href = `${process.env.BASE_URL}`;
+        window.location.href = `https://tennis-app-client-njr.herokuapp.com/`;
     }
 
     render() {
@@ -21,7 +21,7 @@ export default class CoachRouter extends React.Component {
 
             <Navbar fixed="top" expand="lg" style={{backgroundColor:"transparent"}} >
                 <Container>
-                    <Navbar.Brand href="#">
+                    <Navbar.Brand href="/home">
                         <img alt="" src={Logo} height="32"  className="d-inline-block align-top" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />

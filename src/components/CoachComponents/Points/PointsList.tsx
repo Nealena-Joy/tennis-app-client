@@ -1,7 +1,6 @@
 import React from 'react';
 import {Offcanvas, Table, OverlayTrigger, Popover, Button} from 'react-bootstrap';
-import trash from '../../assets/trash.png';
-import edit from '../../assets/edit.png';
+import trash from '../../assets/delete.png';
 import PointEdit from './PointEdit';
 import APIURL from '../../../helpers/environment';
 
@@ -85,7 +84,7 @@ export default class PointsList extends React.Component<{},Points> {
         e.preventDefault();
         let token = localStorage.getItem('token');
         console.log("Handle Delete", pointID)
-        fetch(`https://tennis-app-njr.herokuapp.com/points/delete/${pointID}`, { 
+        fetch(`${APIURL}/points/delete/${pointID}`, { 
             method: 'DELETE',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -99,13 +98,14 @@ export default class PointsList extends React.Component<{},Points> {
 
     render() {
     return(
-        <div style={{margin:"0 30px"}}>
-            <h1>Points List</h1>
+        <div id="points" style={{paddingTop:"5em",margin:"auto",color:"whitesmoke"}} className="pointsList">
+            <h3 style={{width:"80%",margin:"auto"}}>Points List</h3>
+            <div style={{backgroundColor:"lightgrey",height:"500px",width:"80%",margin:"auto",overflow:"scroll",overflowX:"hidden"}}>
             <Table striped bordered hover size="sm">
                 <thead>
-                    <tr>
+                    <tr style={{backgroundColor:"#e8cf59"}}>
                         <th>#</th>
-                        <th>Match Title</th>
+                        <th>Point</th>
                         <th>Set, Game Score</th>
                         <th>Serve Result</th>
                         <th>Point Result</th>
@@ -115,14 +115,14 @@ export default class PointsList extends React.Component<{},Points> {
                 </thead>
                 <tbody>
                 {this.state.points.map((point: PointDetails, index) => (
-                    <tr style={{verticalAlign:"middle"}} key={1+index}>
-                        <td>{1+index}</td>
-                        <td>{point.matchTitle}</td>
-                        <td>{point.setScore}, {point.gameScore}</td>
-                        <td>{point.serveResult}</td>
-                        <td>{point.pointResult}</td>
-                        <td>{point.coachComment}</td>
-                        <td>
+                    <tr style={{verticalAlign:"middle",backgroundColor:"lightgrey"}} key={1+index}>
+                        <td >{1+index}</td>
+                        <td >{point.id}</td>
+                        <td >{point.setScore}, {point.gameScore}</td>
+                        <td >{point.serveResult}</td>
+                        <td >{point.pointResult}</td>
+                        <td >{point.coachComment}</td>
+                        <td >
 
                             <OverlayTrigger placement="top" trigger="click" key={point.pointID} rootClose={true}
                             overlay={(
@@ -148,12 +148,10 @@ export default class PointsList extends React.Component<{},Points> {
                             </OverlayTrigger>
 
 
-
-
                             &nbsp;&nbsp;
                             <button onClick={()=>this.handleShow(point.pointID)}
-                                style={{border:"none",backgroundColor:"transparent"}}>
-                                <img src={edit} alt="delete" style={{height:"25px"}}/>
+                                style={{borderRadius:"50px",width:"60px",color:"#F8F9F8",backgroundColor:"#008EC3",border:"none",height:"30px"}}>
+                                Edit
                             </button>
                         </td>
 
@@ -168,17 +166,11 @@ export default class PointsList extends React.Component<{},Points> {
                                 coachComment={point.coachComment}/>
                             </Offcanvas.Body>
                         </Offcanvas>
-
-
                     </tr>
                 ))}
                 </tbody>
                 </Table>
-
-
-
-
-                
+                </div>                
         </div>
     )}
 }

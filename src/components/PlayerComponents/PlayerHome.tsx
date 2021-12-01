@@ -24,8 +24,10 @@ export default class PlayerHome extends React.Component {
                     </Card.Text>
                 </Card.Body> 
                 <Card.Footer>
-                    <Button style={{backgroundColor:"#0083c3",borderRadius:"50px",
-                    color:"whitesmoke",border:"none",width:"100px"}}>View</Button>
+                <Button style={{backgroundColor:"#0083c3",borderRadius:"50px",
+                    color:"whitesmoke",border:"none",width:"100px"}}
+                    href="https://tennis-app-client-njr.herokuapp.com/match-list"
+                    >View</Button>
                 </Card.Footer>
             </Card>
             </Col>
@@ -40,8 +42,10 @@ export default class PlayerHome extends React.Component {
                     </Card.Text>
                 </Card.Body>
                 <Card.Footer style={{backgroundColor:"transparent"}}>
-                    <Button style={{backgroundColor:"#0083c3",borderRadius:"50px",
-                    color:"whitesmoke",border:"none",width:"100px"}}>View</Button>
+                <Button style={{backgroundColor:"#0083c3",borderRadius:"50px",
+                    color:"whitesmoke",border:"none",width:"100px"}}
+                    href="https://tennis-app-client-njr.herokuapp.com/match-analysis"
+                    >View</Button>
                 </Card.Footer>
             </Card>
             </Col>
@@ -56,8 +60,10 @@ export default class PlayerHome extends React.Component {
                     </Card.Text>
                 </Card.Body>
                 <Card.Footer>
-                    <Button style={{backgroundColor:"#0083c3",borderRadius:"50px",
-                    color:"whitesmoke",border:"none",width:"100px"}}>View</Button>
+                <Button style={{backgroundColor:"#0083c3",borderRadius:"50px",
+                    color:"whitesmoke",border:"none",width:"100px"}}
+                    href="https://tennis-app-client-njr.herokuapp.com/settings"
+                    >View</Button>
                 </Card.Footer>
             </Card>
             </Col>

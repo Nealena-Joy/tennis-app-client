@@ -1,13 +1,16 @@
 import React from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
+import { Redirect } from 'react-router';
 import APIURL from '../../helpers/environment';
 import SignUp from './SignUp';
+import CoachHome from '../CoachComponents/CoachHome';
 
 type Types = {
     username: string,
     password: string,
     loginError: string,
     show: string,
+    isLoggedIn: boolean,
 }
 
 export default class Login extends React.Component<{},Types> {
@@ -18,6 +21,7 @@ export default class Login extends React.Component<{},Types> {
             password: '',
             loginError: '',
             show: '0',
+            isLoggedIn: false,
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleShow = this.handleShow.bind(this);
@@ -50,6 +54,7 @@ export default class Login extends React.Component<{},Types> {
             localStorage.setItem('lastName', lastName);
             localStorage.setItem('username', username);
             localStorage.setItem('userID', userID);
+            window.location.href = `http://localhost:3000/home`;
         })
         .catch((error) => {
             console.log("Login Error:", error)
@@ -59,8 +64,6 @@ export default class Login extends React.Component<{},Types> {
         })
     }
 
-    
-    
     //!  TOGGLE SIGN UP MODAL
     handleShow = (value: string) => {
         this.setState({show: value})

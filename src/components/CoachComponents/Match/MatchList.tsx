@@ -111,12 +111,13 @@ export default class MatchList extends React.Component<MatchProps,Match>{
     render() {
         // if (this.state.matches.length > 0){
     return(
-        <div className="MatchList" style={{backgroundColor:"transparent"}}>
+        <div className="MatchList" style={{backgroundColor:"transparent",paddingTop:"5em"}}>
             <h3 style={{color:"whitesmoke"}}>
                 List of Matches
             </h3> 
             <br/>
-            <Table responsive style={{borderRadius:"10px",backgroundColor:"lightgrey"}}>
+            <div style={{backgroundColor:"lightgrey",height:"500px",borderRadius:"5px",overflow:"hidden",overflowX:"hidden"}}>
+            <Table responsive style={{}}>
                 <thead>
                     <tr >
                         <th>#</th>
@@ -186,6 +187,7 @@ export default class MatchList extends React.Component<MatchProps,Match>{
                     
                 </tbody>
             </Table>
+            </div>
             
         </div>
     )}

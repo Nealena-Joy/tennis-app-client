@@ -4,7 +4,6 @@ import GuestLandingPage from './components/auth/GuestLandingPage';
 import CoachRouter from './components/CoachComponents/CoachRouter';
 import PlayerRouter from './components/PlayerComponents/PlayerRouter';
 import Footer from './components/auth/Footer';
-require('dotenv').config();
 
 const App: React.FunctionComponent = () => {
     let token = localStorage.getItem('token')
@@ -19,7 +18,9 @@ const App: React.FunctionComponent = () => {
         return(<GuestLandingPage />)
       } else {
           if (userRole === 'Coach') {
-            return(<CoachRouter />)
+            return(
+              <CoachRouter />
+            )
           } else {
             return(<PlayerRouter />)
           }

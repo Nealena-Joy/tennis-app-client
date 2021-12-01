@@ -133,9 +133,9 @@ export default class CoachProfile extends React.Component<{},States> {
                 //!  NEED TO ALSO UPDATE LOCAL STORAGE
                 let firstName = this.state.firstName;
                 localStorage.setItem('firstName', firstName);
+                this.setState({showEditBTN2: false, firstNameRO: true, lastNameRO: true, usernameRO: true})
             })
             .catch((error) => console.log("Update Error:", error))
-            this.setState({showEditBTN2: false, firstNameRO: true})
     }
 
     render() {
@@ -176,7 +176,7 @@ export default class CoachProfile extends React.Component<{},States> {
                     <Col sm={5}>
                         <Form.Control type="text" placeholder="Last Name"
                         readOnly={this.state.lastNameRO} defaultValue={this.state.lastName}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>)=>this.setState({password: e.target.value})}/>
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>)=>this.setState({lastName: e.target.value})}/>
                     </Col>
                     <Col>
                         <button style={{margin:"7px auto",padding:"0",color:"#5799f4",border:"none",backgroundColor:"transparent"}}
@@ -193,7 +193,7 @@ export default class CoachProfile extends React.Component<{},States> {
                     </Form.Label>
                     <Col sm={5}>
                         <Form.Control type="email" readOnly={this.state.usernameRO} defaultValue={this.state.username}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>)=>this.setState({password: e.target.value})}/>
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>)=>this.setState({username: e.target.value})}/>
                     </Col>
                     <Col>
                         <button style={{margin:"7px auto",padding:"0",color:"#5799f4",border:"none",backgroundColor:"transparent"}}

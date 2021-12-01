@@ -77,7 +77,7 @@ export default class MatchesCreate extends React.Component<{},Player> {
         console.log("Submit", this.state)
         let token = localStorage.getItem('token')
 
-        fetch(`https://tennis-app-njr.herokuapp.com/matches/creatematch`,{
+        fetch(`${APIURL}/matches/creatematch`,{
             method: 'POST',
             body: JSON.stringify({match: 
                 {
@@ -96,6 +96,7 @@ export default class MatchesCreate extends React.Component<{},Player> {
         .then((response) => response.json())
         .then((response) => {
             console.log("Match Created:",response);
+            window.location.reload();
         })
         .catch((error) => console.log("Match Error:", error));
     }
